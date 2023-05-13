@@ -1,0 +1,1 @@
+INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence, in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes) VALUES (0, 'Marianne', 'Timmer', 'marie@hotmail.com', 'liefdevoorschaatsen123', 'Lagestraat', 1, 'Stedum', 'Anna Peters', '06123456', '', '');
