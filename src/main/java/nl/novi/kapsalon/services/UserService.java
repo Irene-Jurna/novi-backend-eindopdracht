@@ -1,6 +1,7 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.UserDto;
+import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,22 @@ public class UserService {
         userrepos.save(user);
         return user.getId();
     }
+
+    public UserDto getUser(Long id) {
+        User user = userrepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gebruiker niet gevonden"));
+        UserDto userDto = new UserDto();
+        userDto.firstName = user.getFirstName();
+        userDto.lastName = user.getLastName();
+        userDto.email = user.getEmail();
+        userDto.password = user.getPassword();
+        userDto.address = user.getAddress();
+        userDto.houseNumber = user.getHouseNumber();
+        userDto.residence = user.getResidence();
+        userDto.inCaseOfEmergencyContact = user.getInCaseOfEmergencyContact();
+        userDto.emergencyContactPhoneNumber = user.getEmergencyContactPhoneNumber();
+        userDto.preferredHairdresser = user.getPreferredHairdresser();
+        userDto.notes = user.getNotes();
+        return userDto;
+    }
+
 }

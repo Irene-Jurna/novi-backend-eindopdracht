@@ -61,14 +61,20 @@ public class UserController {
 //        return ResponseEntity.ok(userrepos.findAll());
 //    }
 
+//    @GetMapping("/{id}")
+//    public ResponseEntity<User> getUser(@PathVariable int id) {
+//        if (id >= 0 && id < users.size()) {
+//            User user = users.get(id);
+//            return new ResponseEntity<>(user, HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable int id) {
-        if (id >= 0 && id < users.size()) {
-            User user = users.get(id);
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
+        UserDto userDto = userservice.getUser(id);
+        return ResponseEntity.ok(userDto);
     }
 
     // Na toevoegen repository werkt deze niet meer
