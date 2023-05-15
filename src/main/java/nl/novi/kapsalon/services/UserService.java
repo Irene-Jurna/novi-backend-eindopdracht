@@ -6,6 +6,9 @@ import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userrepos;
@@ -15,6 +18,25 @@ public class UserService {
     }
 
     public Long createUser(UserDto userDto) {
+        User user = transferDtoToUser(userDto);
+        return user.getId();
+    }
+
+    public UserDto getUser(Long id) {
+        User user = userrepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gebruiker niet gevonden"));
+        return transferUserToDto(user);
+    }
+
+    public List<UserDto> getAllUsers() {
+        Iterable<User> users = userrepos.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : users) {
+            userDtoList.add(transferUserToDto(user));
+        }
+        return userDtoList;
+    }
+
+    public User transferDtoToUser(UserDto userDto) {
         User user = new User();
         user.setFirstName(userDto.firstName);
         user.setLastName(userDto.lastName);
@@ -28,12 +50,12 @@ public class UserService {
         user.setPreferredHairdresser(userDto.preferredHairdresser);
         user.setNotes(userDto.notes);
         userrepos.save(user);
-        return user.getId();
+        return user;
     }
 
-    public UserDto getUser(Long id) {
-        User user = userrepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gebruiker niet gevonden"));
+    public UserDto transferUserToDto(User user) {
         UserDto userDto = new UserDto();
+        userDto.id = user.getId();
         userDto.firstName = user.getFirstName();
         userDto.lastName = user.getLastName();
         userDto.email = user.getEmail();

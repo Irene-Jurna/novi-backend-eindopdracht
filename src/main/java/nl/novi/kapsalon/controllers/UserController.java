@@ -34,6 +34,7 @@ public class UserController {
 //        return new ResponseEntity<>(user, HttpStatus.CREATED);
 //    }
 
+    // Check of er geen duplicate namen zijn, retourneer status 409 (met eigen exception class)
     @PostMapping("")
     public ResponseEntity<Object> createuser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
@@ -60,6 +61,12 @@ public class UserController {
 //    public ResponseEntity<Iterable<User>> getUsers() {
 //        return ResponseEntity.ok(userrepos.findAll());
 //    }
+
+    @GetMapping("")
+    public ResponseEntity<List<UserDto>> getAllUsers() {
+        List<UserDto> dtoList = userservice.getAllUsers();
+        return ResponseEntity.ok(dtoList);
+    }
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<User> getUser(@PathVariable int id) {
