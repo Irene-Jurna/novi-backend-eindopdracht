@@ -18,6 +18,7 @@ public class UserService {
     }
 
     public Long createUser(UserDto userDto) {
+        // Duplicatename exception gooien
         User user = transferDtoToUser(userDto);
         return user.getId();
     }
