@@ -61,32 +61,11 @@ public class UserController {
         return ResponseEntity.ok(usersWithSubstring);
     }
 
-    // Na toevoegen repository werkt deze niet meer
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Object> updateUser(@PathVariable int id, @RequestBody User user) {
-//        if (id >= 0 && id < users.size()) {
-//            users.set(id, user);
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>("Deze persoon staat niet in ons systeem.", HttpStatus.NOT_FOUND);
-//        }
-//    }
-
-//    @PutMapping("{id}")
-//    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
-//        userservice.updateUser(id, userDto);
-//        return ResponseEntity.noContent().build();
-//    }
-
-    // Nu wordt er user die je wil updaten als nieuwe user erin gezet (later op te lossen met de server: update methode)
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody User user) {
-//        if (userrepos.findById(id).isPresent()) {
-//            userrepos.save(user);
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//    }
+    @PutMapping("{id}")
+    public ResponseEntity<UserDto> updateUser(@Valid @PathVariable("id") Long id, @RequestBody UserDto userDto) {
+        userservice.updateUser(id, userDto);
+        return ResponseEntity.noContent().build();
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {

@@ -24,7 +24,8 @@ public class UserService {
         if (existingUser != null) {
             throw new DuplicateNameException("Deze gebruiker staat al in het systeem");
         }
-        User user = transferDtoToUser(userDto);
+        User user = new User();
+        user = transferDtoToUser(user, userDto);
         userrepos.save(user);
         return user.getId();
     }
@@ -52,18 +53,22 @@ public class UserService {
         return userDtoList;
     }
 
-//    public void updateUser(Long id, UserDto userDto) {
-//        if (!userrepos.existsById(id)) throw new ResourceNotFoundException("Gebruikersid '" + id + "' bestaat niet");
-//        User user = transferDtoToUser(userDto);
-//        userrepos.save(user);
-//    }
+    public void updateUser(Long id, UserDto userForUpdate) {
+        Optional<User> optionalUser = userrepos.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new ResourceNotFoundException("Id '" + id + "' staat niet in het systeem");
+        } else {
+            User existingUser = optionalUser.get();
+            User userToBeSaved = transferDtoToUser(existingUser, userForUpdate);
+            userrepos.save(userToBeSaved);
+        }
+    }
 
     public void deleteUser(Long id) {
         userrepos.deleteById(id);
     }
 
-    public User transferDtoToUser(UserDto userDto) {
-        User user = new User();
+    public User transferDtoToUser(User user, UserDto userDto) {
         user.setFirstName(userDto.firstName);
         user.setLastName(userDto.lastName);
         user.setEmail(userDto.email);
