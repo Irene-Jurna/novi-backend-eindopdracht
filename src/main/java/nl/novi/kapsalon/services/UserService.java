@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -49,6 +50,16 @@ public class UserService {
             userDtoList.add(transferUserToDto(user));
         }
         return userDtoList;
+    }
+
+//    public void updateUser(Long id, UserDto userDto) {
+//        if (!userrepos.existsById(id)) throw new ResourceNotFoundException("Gebruikersid '" + id + "' bestaat niet");
+//        User user = transferDtoToUser(userDto);
+//        userrepos.save(user);
+//    }
+
+    public void deleteUser(Long id) {
+        userrepos.deleteById(id);
     }
 
     public User transferDtoToUser(UserDto userDto) {

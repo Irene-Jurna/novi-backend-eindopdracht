@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @GetMapping("search")
-    public ResponseEntity<List<UserDto>> getUserBasedOnSubString (@RequestParam String subString) {
+    public ResponseEntity<List<UserDto>> getUsersBasedOnSubString(@RequestParam String subString) {
         List<UserDto> usersWithSubstring = userservice.getUsersBasedOnSubString(subString, subString);
         return ResponseEntity.ok(usersWithSubstring);
     }
@@ -72,6 +72,12 @@ public class UserController {
 //        }
 //    }
 
+//    @PutMapping("{id}")
+//    public ResponseEntity<UserDto> updateUser(@PathVariable("id") Long id, @RequestBody UserDto userDto) {
+//        userservice.updateUser(id, userDto);
+//        return ResponseEntity.noContent().build();
+//    }
+
     // Nu wordt er user die je wil updaten als nieuwe user erin gezet (later op te lossen met de server: update methode)
 //    @PutMapping("/{id}")
 //    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody User user) {
@@ -84,11 +90,8 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
-        if (id >= 0 && id < users.size()) {
-            users.remove(id);
-            return new ResponseEntity<>("Deze persoon is succesvol verwijderd uit het systeem.", HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        userservice.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
