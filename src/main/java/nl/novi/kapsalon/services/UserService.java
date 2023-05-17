@@ -5,7 +5,6 @@ import nl.novi.kapsalon.exceptions.DuplicateNameException;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +35,15 @@ public class UserService {
 
     public List<UserDto> getAllUsers() {
         Iterable<User> users = userrepos.findAll();
+        List<UserDto> userDtoList = new ArrayList<>();
+        for (User user : users) {
+            userDtoList.add(transferUserToDto(user));
+        }
+        return userDtoList;
+    }
+
+    public List<UserDto> getUsersBasedOnSubString(String firstNameSubString, String lastNameSubString) {
+        List<User> users = userrepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(firstNameSubString, lastNameSubString);
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : users) {
             userDtoList.add(transferUserToDto(user));

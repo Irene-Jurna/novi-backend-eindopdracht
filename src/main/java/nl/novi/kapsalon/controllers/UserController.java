@@ -55,22 +55,11 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-//    @GetMapping("search")
-//    public ResponseEntity<Iterable<User>> getUserBasedOnSubString(@RequestParam String substring) {
-//        return ResponseEntity.ok(userrepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(substring, substring));
-//    }
-
-    // Na toevoegen repository werkt deze niet meer
-//    @GetMapping("search")
-//    public ResponseEntity<List<User>> getUserBasedOnSubString(@RequestParam String substring) {
-//        List<User> usersWithSubString = new ArrayList<>();
-//        for (User user : users) {
-//            if (user.getFirstName().toLowerCase().contains(substring.toLowerCase()) || user.getLastName().toLowerCase().contains(substring.toLowerCase())) {
-//                usersWithSubString.add(user);
-//            }
-//        }
-//        return new ResponseEntity<>(usersWithSubString, HttpStatus.OK);
-//    }
+    @GetMapping("search")
+    public ResponseEntity<List<UserDto>> getUserBasedOnSubString (@RequestParam String subString) {
+        List<UserDto> usersWithSubstring = userservice.getUsersBasedOnSubString(subString, subString);
+        return ResponseEntity.ok(usersWithSubstring);
+    }
 
     // Na toevoegen repository werkt deze niet meer
 //    @PutMapping("/{id}")
