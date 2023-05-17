@@ -3,9 +3,7 @@ package nl.novi.kapsalon.controllers;
 import jakarta.validation.Valid;
 import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.models.User;
-import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -27,14 +25,6 @@ public class UserController {
         this.userservice = userservice;
     }
 
-//    @PostMapping("")
-//    @ResponseBody
-//    public ResponseEntity<User> createUser(@RequestBody User user) {
-//        users.add(user);
-//        return new ResponseEntity<>(user, HttpStatus.CREATED);
-//    }
-
-    // Check of er geen duplicate namen zijn, retourneer status 409 (met eigen exception class)
     @PostMapping("")
     public ResponseEntity<Object> createuser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
@@ -46,21 +36,12 @@ public class UserController {
             }
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
+
         Long id = userservice.createUser(userDto);
         userDto.id = id;
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + id).toUriString());
         return ResponseEntity.created(uri).body(userDto);
     }
-
-//    @GetMapping("")
-//    public ResponseEntity<List<User>> getUsers() {
-//        return new ResponseEntity<>(users, HttpStatus.OK);
-//    }
-
-//    @GetMapping("")
-//    public ResponseEntity<Iterable<User>> getUsers() {
-//        return ResponseEntity.ok(userrepos.findAll());
-//    }
 
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
@@ -68,21 +49,16 @@ public class UserController {
         return ResponseEntity.ok(dtoList);
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<User> getUser(@PathVariable int id) {
-//        if (id >= 0 && id < users.size()) {
-//            User user = users.get(id);
-//            return new ResponseEntity<>(user, HttpStatus.OK);
-//        } else {
-//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         UserDto userDto = userservice.getUser(id);
         return ResponseEntity.ok(userDto);
     }
+
+//    @GetMapping("search")
+//    public ResponseEntity<Iterable<User>> getUserBasedOnSubString(@RequestParam String substring) {
+//        return ResponseEntity.ok(userrepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(substring, substring));
+//    }
 
     // Na toevoegen repository werkt deze niet meer
 //    @GetMapping("search")
@@ -95,12 +71,6 @@ public class UserController {
 //        }
 //        return new ResponseEntity<>(usersWithSubString, HttpStatus.OK);
 //    }
-
-//    @GetMapping("search")
-//    public ResponseEntity<Iterable<User>> getUserBasedOnSubString(@RequestParam String substring) {
-//        return ResponseEntity.ok(userrepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(substring, substring));
-//    }
-
 
     // Na toevoegen repository werkt deze niet meer
 //    @PutMapping("/{id}")

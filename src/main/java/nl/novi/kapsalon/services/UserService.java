@@ -1,9 +1,11 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.UserDto;
+import nl.novi.kapsalon.exceptions.DuplicateNameException;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,8 +20,12 @@ public class UserService {
     }
 
     public Long createUser(UserDto userDto) {
-        // Duplicatename exception gooien
+        User existingUser = userrepos.findUsersByFirstNameAndLastName(userDto.firstName, userDto.lastName);
+        if (existingUser != null) {
+            throw new DuplicateNameException("Deze gebruiker staat al in het systeem");
+        }
         User user = transferDtoToUser(userDto);
+        userrepos.save(user);
         return user.getId();
     }
 
