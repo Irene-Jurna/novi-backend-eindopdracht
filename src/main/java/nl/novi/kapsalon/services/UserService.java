@@ -26,7 +26,6 @@ public class UserService {
         }
         User user = new User();
         user = transferDtoToUser(user, userDto);
-        userrepos.save(user);
         return user.getId();
     }
 
