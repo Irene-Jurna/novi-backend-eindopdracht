@@ -1,9 +1,14 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.TreatmentDto;
+import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TreatmentService {
@@ -19,11 +24,49 @@ public class TreatmentService {
         return treatment.getId();
     }
 
+    public List<TreatmentDto> getAllTreatments() {
+        Iterable<Treatment> treatments = treatmentRepos.findAll();
+        List<TreatmentDto> treatmentDtoList = new ArrayList<>();
+        for (Treatment treat : treatments) {
+            treatmentDtoList.add(transferTreatmentToDto(treat));
+        }
+        return treatmentDtoList;
+    }
+
+    public void updateTreatment(Long id, TreatmentDto treatmentForUpdate) {
+        Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
+        if (optionalTreatment.isEmpty()) {
+            throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
+        } else {
+            Treatment existingTreatment = optionalTreatment.get();
+            Treatment treatmentToBeSaved = transferDtoToTreatment(existingTreatment, treatmentForUpdate);
+            treatmentRepos.save(treatmentToBeSaved);
+        }
+    }
+
+    public void deleteTreatment(Long id) {
+        Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
+        if (optionalTreatment.isEmpty()) {
+            throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
+        } else {
+            treatmentRepos.deleteById(id);
+        }
+    }
+
     public Treatment transferDtoToTreatment(Treatment treat, TreatmentDto tdto) {
         treat.setName(tdto.name);
         treat.setDurationInMinutes(tdto.durationInMinutes);
         treat.setPrice(tdto.price);
         treatmentRepos.save(treat);
         return treat;
+    }
+
+    public TreatmentDto transferTreatmentToDto(Treatment treatment) {
+        TreatmentDto treatmentDto = new TreatmentDto();
+        treatmentDto.id = treatment.getId();
+        treatmentDto.name = treatment.getName();
+        treatmentDto.durationInMinutes = treatment.getDurationInMinutes();
+        treatmentDto.price = treatment.getPrice();
+        return treatmentDto;
     }
 }
