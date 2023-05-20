@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 public class UserController {
-    private final UserService userservice;
+    private final UserService userService;
     private List<User> users = new ArrayList<>();
 
-    public UserController(UserService userservice) {
-        this.userservice = userservice;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("")
@@ -37,7 +37,7 @@ public class UserController {
             return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
         }
 
-        Long id = userservice.createUser(userDto);
+        Long id = userService.createUser(userDto);
         userDto.id = id;
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().path("/" + id).toUriString());
         return ResponseEntity.created(uri).body(userDto);
@@ -45,31 +45,31 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
-        List<UserDto> dtoList = userservice.getAllUsers();
+        List<UserDto> dtoList = userService.getAllUsers();
         return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-        UserDto userDto = userservice.getUser(id);
+        UserDto userDto = userService.getUser(id);
         return ResponseEntity.ok(userDto);
     }
 
     @GetMapping("search")
     public ResponseEntity<List<UserDto>> getUsersBasedOnSubString(@RequestParam String subString) {
-        List<UserDto> usersWithSubstring = userservice.getUsersBasedOnSubString(subString, subString);
+        List<UserDto> usersWithSubstring = userService.getUsersBasedOnSubString(subString, subString);
         return ResponseEntity.ok(usersWithSubstring);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@Valid @PathVariable("id") Long id, @RequestBody UserDto userDto) {
-        userservice.updateUser(id, userDto);
+        userService.updateUser(id, userDto);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
-        userservice.deleteUser(id);
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 

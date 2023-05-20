@@ -13,14 +13,14 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-    private final UserRepository userrepos;
+    private final UserRepository userRepos;
 
-    public UserService(UserRepository userrepos) {
-        this.userrepos = userrepos;
+    public UserService(UserRepository userRepos) {
+        this.userRepos = userRepos;
     }
 
     public Long createUser(UserDto userDto) {
-        User existingUser = userrepos.findUsersByFirstNameAndLastName(userDto.firstName, userDto.lastName);
+        User existingUser = userRepos.findUsersByFirstNameAndLastName(userDto.firstName, userDto.lastName);
         if (existingUser != null) {
             throw new DuplicateNameException("Deze gebruiker staat al in het systeem");
         }
@@ -31,12 +31,12 @@ public class UserService {
     }
 
     public UserDto getUser(Long id) {
-        User user = userrepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gebruiker niet gevonden"));
+        User user = userRepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Gebruiker niet gevonden"));
         return transferUserToDto(user);
     }
 
     public List<UserDto> getAllUsers() {
-        Iterable<User> users = userrepos.findAll();
+        Iterable<User> users = userRepos.findAll();
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : users) {
             userDtoList.add(transferUserToDto(user));
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public List<UserDto> getUsersBasedOnSubString(String firstNameSubString, String lastNameSubString) {
-        List<User> users = userrepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(firstNameSubString, lastNameSubString);
+        List<User> users = userRepos.findUsersByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(firstNameSubString, lastNameSubString);
         List<UserDto> userDtoList = new ArrayList<>();
         for (User user : users) {
             userDtoList.add(transferUserToDto(user));
@@ -54,18 +54,18 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserDto userForUpdate) {
-        Optional<User> optionalUser = userrepos.findById(id);
+        Optional<User> optionalUser = userRepos.findById(id);
         if (optionalUser.isEmpty()) {
             throw new ResourceNotFoundException("Id '" + id + "' staat niet in het systeem");
         } else {
             User existingUser = optionalUser.get();
             User userToBeSaved = transferDtoToUser(existingUser, userForUpdate);
-            userrepos.save(userToBeSaved);
+            userRepos.save(userToBeSaved);
         }
     }
 
     public void deleteUser(Long id) {
-        userrepos.deleteById(id);
+        userRepos.deleteById(id);
     }
 
     public User transferDtoToUser(User user, UserDto userDto) {
@@ -80,7 +80,7 @@ public class UserService {
         user.setEmergencyContactPhoneNumber(userDto.emergencyContactPhoneNumber);
         user.setPreferredHairdresser(userDto.preferredHairdresser);
         user.setNotes(userDto.notes);
-        userrepos.save(user);
+        userRepos.save(user);
         return user;
     }
 
