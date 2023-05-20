@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class TreatmentService {
     private final TreatmentRepository treatmentRepos;
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public TreatmentService(TreatmentRepository treatmentRepos, ModelMapper modelMapper) {
         this.treatmentRepos = treatmentRepos;
@@ -65,7 +65,8 @@ public class TreatmentService {
     }
 
     public Treatment transferDtoToTreatment(Treatment treat, TreatmentDto tDto) {
-        modelMapper.map(tDto, treat);
+        treat = modelMapper.map(tDto, Treatment.class);
+        treatmentRepos.save(treat);
         return treat;
     }
 
@@ -79,6 +80,7 @@ public class TreatmentService {
 
     public TreatmentDto transferTreatmentToDto(Treatment treatment) {
         TreatmentDto treatmentDto = modelMapper.map(treatment, TreatmentDto.class);
+        treatmentDto.setName(treatment.getName());
         return treatmentDto;
     }
 

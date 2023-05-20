@@ -20,7 +20,7 @@ public class TreatmentController {
 
     @PostMapping("")
     public ResponseEntity<Object> createTreatment(@Valid @RequestBody TreatmentDto tdto) {
-        Integer treatmentId = treatmentService.createTreatment(tdto);
+        treatmentService.createTreatment(tdto);
         return new ResponseEntity<>(tdto, HttpStatus.CREATED);
     }
 
