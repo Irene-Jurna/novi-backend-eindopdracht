@@ -5,7 +5,6 @@ import nl.novi.kapsalon.dtos.TreatmentDto;
 import nl.novi.kapsalon.services.TreatmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class TreatmentController {
 
     @PostMapping("")
     public ResponseEntity<Object> createTreatment(@Valid @RequestBody TreatmentDto tdto) {
-        Long treatmentId = treatmentService.createTreatment(tdto);
+        Integer treatmentId = treatmentService.createTreatment(tdto);
         return new ResponseEntity<>(tdto, HttpStatus.CREATED);
     }
 
@@ -31,14 +30,20 @@ public class TreatmentController {
         return ResponseEntity.ok(dtoList);
     }
 
+    @GetMapping("/sum")
+    public ResponseEntity<Integer> calculateCombinedDuration(@RequestBody List<Integer> treatmentIds) {
+        int combinedDuration = treatmentService.calculateCombinedDuration(treatmentIds);
+        return new ResponseEntity<>(combinedDuration, HttpStatus.OK);
+    }
+
     @PutMapping("{id}")
-    public ResponseEntity<TreatmentDto> updateTreatment(@Valid @PathVariable("id") Long id, @RequestBody TreatmentDto treatmentDto) {
+    public ResponseEntity<TreatmentDto> updateTreatment(@Valid @PathVariable("id") Integer id, @RequestBody TreatmentDto treatmentDto) {
         treatmentService.updateTreatment(id, treatmentDto);
         return new ResponseEntity(treatmentDto, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> deleteTreatment(@PathVariable("id") Long id) {
+    public ResponseEntity<Object> deleteTreatment(@PathVariable("id") Integer id) {
         StringBuilder sb = new StringBuilder();
         sb.append("Behandeling succesvol verwijderd");
         treatmentService.deleteTreatment(id);

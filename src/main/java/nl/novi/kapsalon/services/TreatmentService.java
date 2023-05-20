@@ -7,6 +7,7 @@ import nl.novi.kapsalon.repositories.TreatmentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +19,7 @@ public class TreatmentService {
         this.treatmentRepos = treatmentRepos;
     }
 
-    public Long createTreatment(TreatmentDto tDto) {
+    public Integer createTreatment(TreatmentDto tDto) {
         Treatment treatment = new Treatment();
         treatment = transferDtoToTreatment(treatment, tDto);
         return treatment.getId();
@@ -33,7 +34,7 @@ public class TreatmentService {
         return treatmentDtoList;
     }
 
-    public void updateTreatment(Long id, TreatmentDto treatmentForUpdate) {
+    public void updateTreatment(Integer id, TreatmentDto treatmentForUpdate) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
             throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
@@ -44,13 +45,21 @@ public class TreatmentService {
         }
     }
 
-    public void deleteTreatment(Long id) {
+    public void deleteTreatment(Integer id) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
             throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
         } else {
             treatmentRepos.deleteById(id);
         }
+    }
+
+    public Integer calculateCombinedDuration(List<Integer> treatmentIds) {
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIn(treatmentIds);
+        int combinedDuration = 0;
+        for (Treatment treat : treatmentList) {
+            combinedDuration = combinedDuration + treat.getDurationInMinutes();
+        } return combinedDuration;
     }
 
     public Treatment transferDtoToTreatment(Treatment treat, TreatmentDto tdto) {

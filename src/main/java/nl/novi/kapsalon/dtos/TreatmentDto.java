@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 public class TreatmentDto {
-    public Long id;
+    public Integer id;
 
     @NotBlank
     public String name;
