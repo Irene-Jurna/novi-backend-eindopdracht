@@ -9,6 +9,8 @@ public class UserDto {
 
     @NotBlank
     public String firstName;
+
+    @NotBlank
     public String lastName;
 
     @Email
@@ -16,6 +18,7 @@ public class UserDto {
 
     @Size(min = 6)
     public String password;
+
     public String address;
     public Integer houseNumber;
     public String residence;
