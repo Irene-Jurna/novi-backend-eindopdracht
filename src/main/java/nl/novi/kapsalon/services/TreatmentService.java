@@ -20,7 +20,6 @@ public class TreatmentService {
         this.treatmentRepos = treatmentRepos;
         this.modelMapper = modelMapper;
     }
-
     public Integer createTreatment(TreatmentDto tDto) {
         Treatment treatment = new Treatment();
         treatment = transferDtoToTreatment(treatment, tDto);
