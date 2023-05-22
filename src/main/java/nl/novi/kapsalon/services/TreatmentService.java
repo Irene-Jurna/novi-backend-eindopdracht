@@ -20,7 +20,7 @@ public class TreatmentService {
         this.treatmentRepos = treatmentRepos;
         this.modelMapper = modelMapper;
     }
-    public Integer createTreatment(TreatmentDto tDto) {
+    public Long createTreatment(TreatmentDto tDto) {
         Treatment treatment = new Treatment();
         treatment = transferDtoToTreatment(treatment, tDto);
         return treatment.getId();
@@ -35,7 +35,7 @@ public class TreatmentService {
         return treatmentDtoList;
     }
 
-    public void updateTreatment(Integer id, TreatmentDto treatmentForUpdate) {
+    public void updateTreatment(Long id, TreatmentDto treatmentForUpdate) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
             throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
@@ -46,7 +46,7 @@ public class TreatmentService {
         }
     }
 
-    public void deleteTreatment(Integer id) {
+    public void deleteTreatment(Long id) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
             throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
@@ -55,7 +55,7 @@ public class TreatmentService {
         }
     }
 
-    public Integer calculateCombinedDuration(List<Integer> treatmentIds) {
+    public Integer calculateCombinedDuration(List<Long> treatmentIds) {
         List<Treatment> treatmentList = treatmentRepos.findAllByIdIn(treatmentIds);
         int combinedDuration = 0;
         for (Treatment treat : treatmentList) {

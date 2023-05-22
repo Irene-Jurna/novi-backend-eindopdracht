@@ -31,19 +31,19 @@ public class TreatmentController {
     }
 
     @GetMapping("/sum")
-    public ResponseEntity<Integer> calculateCombinedDuration(@RequestBody List<Integer> treatmentIds) {
+    public ResponseEntity<Integer> calculateCombinedDuration(@RequestBody List<Long> treatmentIds) {
         int combinedDuration = treatmentService.calculateCombinedDuration(treatmentIds);
         return new ResponseEntity<>(combinedDuration, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<TreatmentDto> updateTreatment(@Valid @PathVariable("id") Integer id, @RequestBody TreatmentDto treatmentDto) {
+    public ResponseEntity<TreatmentDto> updateTreatment(@Valid @PathVariable("id") Long id, @RequestBody TreatmentDto treatmentDto) {
         treatmentService.updateTreatment(id, treatmentDto);
         return new ResponseEntity(treatmentDto, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> deleteTreatment(@PathVariable("id") Integer id) {
+    public ResponseEntity<Object> deleteTreatment(@PathVariable("id") Long id) {
         StringBuilder sb = new StringBuilder();
         sb.append("Behandeling succesvol verwijderd");
         treatmentService.deleteTreatment(id);
