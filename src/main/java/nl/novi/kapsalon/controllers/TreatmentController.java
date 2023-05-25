@@ -2,6 +2,7 @@ package nl.novi.kapsalon.controllers;
 
 import jakarta.validation.Valid;
 import nl.novi.kapsalon.dtos.TreatmentDto;
+import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.services.TreatmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
