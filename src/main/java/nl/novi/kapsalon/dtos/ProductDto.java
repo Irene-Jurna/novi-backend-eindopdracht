@@ -1,21 +1,23 @@
 package nl.novi.kapsalon.dtos;
 
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-public class TreatmentDto {
+public class ProductDto {
     public Long id;
 
     @NotBlank
     public String name;
 
-    @Min(value=0) @Max(value=180)
-    public Integer durationInMinutes;
+    @Digits(integer = 3, fraction = 2)
+    public Double purchasePrice;
 
-    @Digits(integer=3, fraction = 2)
+    @Digits(integer = 3, fraction = 2)
     public Double price;
+
+    @Positive
+    public Integer inStock;
 
     public Long getId() {
         return id;
@@ -25,12 +27,16 @@ public class TreatmentDto {
         return name;
     }
 
-    public Integer getDurationInMinutes() {
-        return durationInMinutes;
+    public Double getPurchasePrice() {
+        return purchasePrice;
     }
 
     public Double getPrice() {
         return price;
+    }
+
+    public Integer getInStock() {
+        return inStock;
     }
 
     public void setId(Long id) {
@@ -41,11 +47,15 @@ public class TreatmentDto {
         this.name = name;
     }
 
-    public void setDurationInMinutes(Integer durationInMinutes) {
-        this.durationInMinutes = durationInMinutes;
+    public void setPurchasePrice(Double purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public void setInStock(Integer inStock) {
+        this.inStock = inStock;
     }
 }

@@ -45,9 +45,9 @@ public class TreatmentController {
 
     @DeleteMapping("{id}")
     public ResponseEntity<Object> deleteTreatment(@PathVariable("id") Long id) {
+        treatmentService.deleteTreatment(id);
         StringBuilder sb = new StringBuilder();
         sb.append("Behandeling succesvol verwijderd");
-        treatmentService.deleteTreatment(id);
         return new ResponseEntity(sb.toString(), HttpStatus.ACCEPTED);
     }
 }
