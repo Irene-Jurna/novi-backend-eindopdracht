@@ -12,3 +12,8 @@ INSERT INTO treatments (id, name, duration_in_minutes, price) VALUES (38, 'Verve
 INSERT INTO treatments (id, name, duration_in_minutes, price) VALUES (39, 'Spoeling vanaf', 50, 48);
 INSERT INTO treatments (id, name, duration_in_minutes, price) VALUES (40, 'Wassen watergolven', 95, 33.50);
 INSERT INTO treatments (id, name, duration_in_minutes, price) VALUES (41, 'Vlechten vanaf', 30, 28.50);
+
+INSERT INTO products (id, name, purchase_price, price, in_stock) VALUES (10, 'Wella SP shampoo', 5, 7.50, 50);
+INSERT INTO products (id, name, purchase_price, price, in_stock) VALUES (11, 'Wella EIMI haargel', 4, 6, 25);
+INSERT INTO products (id, name, purchase_price, price, in_stock) VALUES (12, 'Wella Elements conditioner', 5, 7, 40);
+INSERT INTO products (id, name, purchase_price, price, in_stock) VALUES (13, 'Wella Elements shampoobar', 8, 14, 30);
