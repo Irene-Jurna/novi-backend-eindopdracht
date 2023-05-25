@@ -1,9 +1,12 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.TreatmentDto;
+import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Treatment;
+import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
+import org.hibernate.MultiIdentifierLoadAccess;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +24,8 @@ public class TreatmentService {
         this.modelMapper = modelMapper;
     }
     public Long createTreatment(TreatmentDto tDto) {
-        Treatment treatment = new Treatment();
-        treatment = transferDtoToTreatment(treatment, tDto);
+        Treatment treatment = transferDtoToTreatment(new Treatment(), tDto);
+        treatmentRepos.save(treatment);
         return treatment.getId();
     }
 
@@ -42,6 +45,7 @@ public class TreatmentService {
         } else {
             Treatment existingTreatment = optionalTreatment.get();
             Treatment treatmentToBeSaved = transferDtoToTreatment(existingTreatment, treatmentForUpdate);
+            treatmentToBeSaved.setId(existingTreatment.getId());
             treatmentRepos.save(treatmentToBeSaved);
         }
     }
@@ -56,7 +60,7 @@ public class TreatmentService {
     }
 
     public Integer calculateCombinedDuration(List<Long> treatmentIds) {
-        List<Treatment> treatmentList = treatmentRepos.findAllByIdIn(treatmentIds);
+                List<Treatment> treatmentList = treatmentRepos.getTreatmentsByIdIn(treatmentIds);
         int combinedDuration = 0;
         for (Treatment treat : treatmentList) {
             combinedDuration = combinedDuration + treat.getDurationInMinutes();
@@ -65,7 +69,6 @@ public class TreatmentService {
 
     public Treatment transferDtoToTreatment(Treatment treat, TreatmentDto tDto) {
         treat = modelMapper.map(tDto, Treatment.class);
-        treatmentRepos.save(treat);
         return treat;
     }
 
