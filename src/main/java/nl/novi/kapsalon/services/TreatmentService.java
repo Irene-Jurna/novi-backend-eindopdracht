@@ -61,7 +61,7 @@ public class TreatmentService {
     }
 
     public Integer calculateCombinedDuration(List<Long> treatmentIds) {
-        List<Treatment> treatmentList = treatmentRepos.getTreatmentsByIdIn(treatmentIds);
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
         int combinedDuration = 0;
         for (Treatment treat : treatmentList) {
             combinedDuration = combinedDuration + treat.getDurationInMinutes();

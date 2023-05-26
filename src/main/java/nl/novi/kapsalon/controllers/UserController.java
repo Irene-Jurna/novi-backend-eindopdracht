@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Object> createuser(@Valid @RequestBody UserDto userDto, BindingResult br) {
+    public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
         if (br.hasFieldErrors()) {
             StringBuilder sb = new StringBuilder();
