@@ -8,5 +8,4 @@ import java.util.List;
 
 public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     List<Treatment> findAllByIdIsIn(List<Long> treatmentIds);
-    List<Treatment> getTreatmentsByIdIn(List<Long> treatmentIds);
 }

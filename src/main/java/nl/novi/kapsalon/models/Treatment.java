@@ -16,4 +16,8 @@ public class Treatment extends BaseModel {
     private String name;
     private Integer durationInMinutes;
     private Double price;
+
+//    @ManyToOne
+//    @JoinColumn(name = "bill_id")
+//    private Bill treatmentsOnBill;
 }

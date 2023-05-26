@@ -40,7 +40,7 @@ public class TreatmentController {
     @PutMapping("{id}")
     public ResponseEntity<TreatmentDto> updateTreatment(@Valid @PathVariable("id") Long id, @RequestBody TreatmentDto treatmentDto) {
         treatmentService.updateTreatment(id, treatmentDto);
-        return new ResponseEntity(treatmentDto, HttpStatus.OK);
+        return new ResponseEntity<>(treatmentDto, HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
@@ -48,6 +48,6 @@ public class TreatmentController {
         treatmentService.deleteTreatment(id);
         StringBuilder sb = new StringBuilder();
         sb.append("Behandeling succesvol verwijderd");
-        return new ResponseEntity(sb.toString(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(sb.toString(), HttpStatus.ACCEPTED);
     }
 }

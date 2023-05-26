@@ -1,10 +1,11 @@
 package nl.novi.kapsalon.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,4 +19,10 @@ public class Product extends BaseModel{
     private Double purchasePrice;
     private Double price;
     private Integer inStock;
+
+    @ManyToMany (cascade = CascadeType.ALL)
+    @JoinTable(name = "bill_product",
+    joinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name="product_id", referencedColumnName = "id"))
+    private List<Bill> productsOnBill;
 }
