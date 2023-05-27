@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name="bills")
@@ -24,7 +24,5 @@ public class Bill extends BaseModel{
     @ManyToMany(mappedBy = "productsOnBill")
     private List<Product> products;
 
-//    private User customer;
-//    private User hairdresser;
-//    private Boolean paid;
+    private Boolean paid;
 }
