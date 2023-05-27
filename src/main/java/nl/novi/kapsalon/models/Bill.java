@@ -1,9 +1,6 @@
 package nl.novi.kapsalon.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,10 +12,14 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name="bills")
-public class Bill extends BaseModel{
+@Table(name = "bills")
+public class Bill extends BaseModel {
 
-    @OneToMany
+    private Long customerId;
+
+    private Long hairdresserId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Treatment> treatments;
 
     @ManyToMany(mappedBy = "productsOnBill")

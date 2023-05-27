@@ -3,25 +3,42 @@ package nl.novi.kapsalon.services;
 import nl.novi.kapsalon.dtos.BillDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Bill;
+import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.BillRepository;
+import nl.novi.kapsalon.repositories.ProductRepository;
+import nl.novi.kapsalon.repositories.TreatmentRepository;
+import nl.novi.kapsalon.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class BillService {
     private final BillRepository billRepos;
+    private final UserRepository userRepos;
+    private final TreatmentRepository treatmentRepos;
+    private final ProductRepository productRepos;
     private final ModelMapper modelMapper;
 
 
-    public BillService(BillRepository billRepos, ModelMapper modelMapper) {
+    public BillService(BillRepository billRepos, UserRepository userRepos, TreatmentRepository treatmentRepos, ProductRepository productRepos, ModelMapper modelMapper) {
         this.billRepos = billRepos;
+        this.userRepos = userRepos;
+        this.treatmentRepos = treatmentRepos;
+        this.productRepos = productRepos;
         this.modelMapper = modelMapper;
     }
 
     public Long createBill(BillDto bDto) {
         Bill bill = transferDtoToBill(bDto);
+
+        // Happy flow
+//        User hairdresser = userRepos.findById(bDto.hairdresserId).get();
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(bDto.treatments);
+        bill.setTreatments(treatmentList);
+
         billRepos.save(bill);
         return bill.getId();
     }
@@ -29,10 +46,6 @@ public class BillService {
     public BillDto getBill(Long id) {
         Bill bill = billRepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bon niet gevonden"));
         return transferBillToDto(bill);
-    }
-
-    public Bill transferDtoToBill(BillDto bDto) {
-        return modelMapper.map(bDto, Bill.class);
     }
 
     public void updateBill(Long id, BillDto billForUpdate) {
@@ -54,6 +67,10 @@ public class BillService {
         } else {
             billRepos.deleteById(id);
         }
+    }
+
+    public Bill transferDtoToBill(BillDto bDto) {
+        return modelMapper.map(bDto, Bill.class);
     }
 
     public BillDto transferBillToDto(Bill bill) {

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,7 +19,6 @@ public class Treatment extends BaseModel {
     private Integer durationInMinutes;
     private Double price;
 
-//    @ManyToOne
-//    @JoinColumn(name = "bill_id")
-//    private Bill treatmentsOnBill;
+    @ManyToMany(mappedBy = "treatments")
+    List<Bill> bills;
 }
