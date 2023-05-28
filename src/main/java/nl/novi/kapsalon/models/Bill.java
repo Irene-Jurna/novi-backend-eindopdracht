@@ -19,11 +19,15 @@ public class Bill extends BaseModel {
 
     private Long hairdresserId;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "bills")
     private List<Treatment> treatments;
 
-    @ManyToMany(mappedBy = "productsOnBill")
-    private List<Product> products;
+//    @ManyToMany(mappedBy = "bills")
+//    private List<Product> products;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     private Boolean paid;
 }

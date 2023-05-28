@@ -3,6 +3,7 @@ package nl.novi.kapsalon.services;
 import nl.novi.kapsalon.dtos.BillDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Bill;
+import nl.novi.kapsalon.models.Product;
 import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.BillRepository;
 import nl.novi.kapsalon.repositories.ProductRepository;
@@ -11,6 +12,7 @@ import nl.novi.kapsalon.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +37,18 @@ public class BillService {
         Bill bill = transferDtoToBill(bDto);
 
         // Happy flow
-//        User hairdresser = userRepos.findById(bDto.hairdresserId).get();
-        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(bDto.treatments);
+        // User hairdresser = userRepos.findById(bDto.hairdresserId).get();
+//        List<Product> productList = productRepos.findAllByIdIn(bDto.productIds);
+//        bill.setProducts(productList);
+
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(bDto.treatmentIds);
         bill.setTreatments(treatmentList);
+
+//        System.out.println("Treatment IDs: " + bDto.getTreatmentIds());
+//        System.out.println("Product IDs: " + bDto.getProductIds());
+
+//        System.out.println("Treatments: " + bill.getTreatments());
+//        System.out.println("Products: " + bill.getProducts());
 
         billRepos.save(bill);
         return bill.getId();
@@ -69,8 +80,31 @@ public class BillService {
         }
     }
 
-    public Bill transferDtoToBill(BillDto bDto) {
-        return modelMapper.map(bDto, Bill.class);
+    public void assignProductToBill(Long billId, Long productId) {
+        var optionalBill = billRepos.findById(billId);
+        var optionalProduct = productRepos.findById(productId);
+
+        if(optionalBill.isPresent() && optionalProduct.isPresent()) {
+            var bill = optionalBill.get();
+            var product = optionalProduct.get();
+            bill.setProduct(product);
+            billRepos.save(bill);
+        } else {
+            throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
+        }
+    }
+
+//    public Bill transferDtoToBill(BillDto bDto) {
+//        return modelMapper.map(bDto, Bill.class);
+//    }
+
+    public Bill transferDtoToBill (BillDto billDto) {
+        Bill bill = new Bill();
+        bill.setCustomerId(billDto.getCustomerId());
+        bill.setHairdresserId(billDto.getHairdresserId());
+        bill.setPaid(billDto.getPaid());
+        billRepos.save(bill);
+        return bill;
     }
 
     public BillDto transferBillToDto(Bill bill) {

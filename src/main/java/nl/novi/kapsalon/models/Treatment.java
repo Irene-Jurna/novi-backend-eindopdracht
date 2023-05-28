@@ -19,6 +19,9 @@ public class Treatment extends BaseModel {
     private Integer durationInMinutes;
     private Double price;
 
-    @ManyToMany(mappedBy = "treatments")
+    @ManyToMany
+    @JoinTable(name = "bills_treatments",
+            joinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"))
     List<Bill> bills;
 }

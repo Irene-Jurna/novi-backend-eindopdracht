@@ -42,4 +42,10 @@ public class BillController {
         billService.deleteBill(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("{billId}/{productId}")
+    public ResponseEntity<Object> assignProductToBill(@PathVariable("billId") Long billId, @PathVariable("productId") Long productId) {
+        billService.assignProductToBill(billId, productId);
+        return ResponseEntity.noContent().build();
+    }
 }
