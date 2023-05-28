@@ -1,5 +1,7 @@
 package nl.novi.kapsalon.dtos;
 
+import nl.novi.kapsalon.models.Product;
+
 import java.util.List;
 
 public class BillDto {
@@ -7,8 +9,9 @@ public class BillDto {
     public Long customerId;
     public Long hairdresserId;
     public List<Long> treatmentIds;
-    public Long productId;
+//    public Long productId;
 //    public List<Long> productIds;
+    public List<Product> products;
     public Boolean paid;
 
     public Long getId() {
@@ -27,9 +30,9 @@ public class BillDto {
         return treatmentIds;
     }
 
-    public Long getProductId() {
-        return productId;
-    }
+//    public Long getProductId() {
+//        return productId;
+//    }
 
     //    public List<Long> getProductIds() {
 //        return productIds;
@@ -63,7 +66,16 @@ public class BillDto {
         this.paid = paid;
     }
 
-    public void setProductId(Long productId) {
-        this.productId = productId;
+//    public void setProductId(Long productId) {
+//        this.productId = productId;
+//    }
+
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

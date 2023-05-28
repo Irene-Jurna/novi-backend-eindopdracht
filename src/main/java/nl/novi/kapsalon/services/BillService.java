@@ -12,7 +12,6 @@ import nl.novi.kapsalon.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,6 +79,20 @@ public class BillService {
         }
     }
 
+//    public void assignProductToBill(Long billId, Long productId) {
+//        var optionalBill = billRepos.findById(billId);
+//        var optionalProduct = productRepos.findById(productId);
+//
+//        if(optionalBill.isPresent() && optionalProduct.isPresent()) {
+//            var bill = optionalBill.get();
+//            var product = optionalProduct.get();
+//            bill.setProduct(product);
+//            billRepos.save(bill);
+//        } else {
+//            throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
+//        }
+//    }
+
     public void assignProductToBill(Long billId, Long productId) {
         var optionalBill = billRepos.findById(billId);
         var optionalProduct = productRepos.findById(productId);
@@ -87,7 +100,8 @@ public class BillService {
         if(optionalBill.isPresent() && optionalProduct.isPresent()) {
             var bill = optionalBill.get();
             var product = optionalProduct.get();
-            bill.setProduct(product);
+            List<Product> productList = bill.getProducts();
+            productList.add(product);
             billRepos.save(bill);
         } else {
             throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
