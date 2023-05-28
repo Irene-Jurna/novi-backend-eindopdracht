@@ -20,13 +20,13 @@ public class Product extends BaseModel {
     private Double price;
     private Integer inStock;
 
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "bills_products",
-//            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"))
-//    private List<Bill> bills;
-
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "bills_products",
+            joinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"))
     private List<Bill> bills;
+
+//    @OneToMany
+//    private List<Bill> bills;
 
 }
