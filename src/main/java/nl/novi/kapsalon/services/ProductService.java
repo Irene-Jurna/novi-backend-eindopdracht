@@ -36,7 +36,7 @@ public class ProductService {
         return productDtoList;
     }
 
-    public void udateProduct(Long id, ProductDto productForUpdate) {
+    public void updateProduct(Long id, ProductDto productForUpdate) {
         Optional<Product> optionalProduct = productRepos.findById(id);
         if (optionalProduct.isEmpty()) {
             throw new ResourceNotFoundException("Dit product-id staat niet in het systeem");

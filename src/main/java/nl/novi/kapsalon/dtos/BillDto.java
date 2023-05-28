@@ -6,8 +6,9 @@ public class BillDto {
     public Long id;
     public Long customerId;
     public Long hairdresserId;
-    public List<Long> treatments;
-    public List<Long> products;
+    public List<Long> treatmentIds;
+    public Long productId;
+//    public List<Long> productIds;
     public Boolean paid;
 
     public Long getId() {
@@ -22,13 +23,17 @@ public class BillDto {
         return hairdresserId;
     }
 
-    public List<Long> getTreatments() {
-        return treatments;
+    public List<Long> getTreatmentIds() {
+        return treatmentIds;
     }
 
-    public List<Long> getProducts() {
-        return products;
+    public Long getProductId() {
+        return productId;
     }
+
+    //    public List<Long> getProductIds() {
+//        return productIds;
+//    }
 
     public Boolean getPaid() {
         return paid;
@@ -46,15 +51,19 @@ public class BillDto {
         this.hairdresserId = hairdresserId;
     }
 
-    public void setTreatments(List<Long> treatments) {
-        this.treatments = treatments;
+    public void setTreatmentIds(List<Long> treatmentIds) {
+        this.treatmentIds = treatmentIds;
     }
 
-    public void setProducts(List<Long> products) {
-        this.products = products;
-    }
+//    public void setProductIds(List<Long> productIds) {
+//        this.productIds = productIds;
+//    }
 
     public void setPaid(Boolean paid) {
         this.paid = paid;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

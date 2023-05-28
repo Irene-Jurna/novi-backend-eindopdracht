@@ -16,11 +16,13 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
+// implements Serializable?
 public abstract class BaseModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Of Timestamp gebruiken? private Timestamp created (zonder @CreatedDate, met @JsonIgnore)
     @CreatedDate
     private Instant created;
 
