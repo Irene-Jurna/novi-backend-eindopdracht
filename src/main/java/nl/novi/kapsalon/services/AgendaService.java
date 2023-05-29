@@ -7,6 +7,8 @@ import nl.novi.kapsalon.repositories.AgendaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,15 @@ public class AgendaService {
         Agenda agenda = transferDtoToAgenda(aDto);
         agendaRepos.save(agenda);
         return agenda.getId();
+    }
+
+    public List<AgendaDto> getAllAgendas() {
+        Iterable<Agenda> agendas = agendaRepos.findAll();
+        List<AgendaDto> agendaDtoList = new ArrayList<>();
+        for (Agenda ag : agendas) {
+            agendaDtoList.add(transferAgendaToDto(ag));
+        }
+        return agendaDtoList;
     }
 
     public void updateAgenda(Long id, AgendaDto agendaForUpdate) {
@@ -52,7 +63,7 @@ public class AgendaService {
 
     public AgendaDto transferAgendaToDto(Agenda agenda) {
         AgendaDto agendaDto = modelMapper.map(agenda, AgendaDto.class);
-        agendaDto.setCustomerId(agenda.getCustomerId());
+        agendaDto.setHairdresserId(agenda.getHairdresserId());
         return agendaDto;
     }
 }

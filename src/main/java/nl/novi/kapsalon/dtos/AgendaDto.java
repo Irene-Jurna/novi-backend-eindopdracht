@@ -1,48 +1,39 @@
 package nl.novi.kapsalon.dtos;
 
-import java.time.LocalDate;
+import java.util.List;
 
 public class AgendaDto {
-    public Long customerId;
+    public Long id;
     public Long hairdresserId;
-    public LocalDate date;
-    public Integer timeSlot;
+    public List<Integer> timeSlots;
     public Boolean timeSlotAvailable;
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getId() {
+        return id;
     }
 
     public Long getHairdresserId() {
         return hairdresserId;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public Integer getTimeSlot() {
-        return timeSlot;
+    public List<Integer> getTimeSlots() {
+        return timeSlots;
     }
 
     public Boolean getTimeSlotAvailable() {
         return timeSlotAvailable;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setHairdresserId(Long hairdresserId) {
         this.hairdresserId = hairdresserId;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public void setTimeSlot(Integer timeSlot) {
-        this.timeSlot = timeSlot;
+    public void setTimeSlots(List<Integer> timeSlots) {
+        this.timeSlots = timeSlots;
     }
 
     public void setTimeSlotAvailable(Boolean timeSlotAvailable) {

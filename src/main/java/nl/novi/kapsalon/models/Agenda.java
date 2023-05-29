@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -16,9 +16,7 @@ import java.time.LocalDate;
 @Table(name="agenda")
 public class Agenda extends BaseModel {
 
-    private Long customerId;
     private Long hairdresserId;
-    private LocalDate date;
-    private Integer timeSlot;
+    private List<Integer> timeSlots;
     private Boolean timeSlotAvailable;
 }
