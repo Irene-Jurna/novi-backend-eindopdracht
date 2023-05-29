@@ -1,32 +1,32 @@
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (1, 'Martin', 'Jurna', 'mjurna@gmail.com', 'geheim123', 'Hogestraat', '23', 'Loppersum', 'Hanneke Abbring',
+VALUES (51, 'Martin', 'Jurna', 'mjurna@gmail.com', 'geheim123', 'Hogestraat', '23', 'Loppersum', 'Hanneke Abbring',
         '0634896721', '', 'Eigenaar kapsalon De Smidse');
 
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (2, 'Gerdine', 'Smit', 'smitjegerdien@hotmail.com', 'wachtwoord123', 'Stedumerweg', '25',
+VALUES (52, 'Gerdine', 'Smit', 'smitjegerdien@hotmail.com', 'wachtwoord123', 'Stedumerweg', '25',
         'Garrelsweer', 'Piet Brummer', '0629730278', '', 'Kapster');
 
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (3, 'Ellen', 'Medema', 'emee@outlook.com', '123123', 'Kruisweg', '50', 'Wirdum', 'Sander Postjes',
+VALUES (53, 'Ellen', 'Medema', 'emee@outlook.com', '123123', 'Kruisweg', '50', 'Wirdum', 'Sander Postjes',
         '062963008833', '', 'Kapster');
 
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact,
                    emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (4, 'Ina', 'Korrema', 'ina75@yahoo.com', 'inlogcode1', 'Stationsstraat', '6', 'Loppersum', 'Sanne Koster',
+VALUES (54, 'Ina', 'Korrema', 'ina75@yahoo.com', 'inlogcode1', 'Stationsstraat', '6', 'Loppersum', 'Sanne Koster',
         '0655443322', '', 'Kapster');
 
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (5, 'Danielle', 'Diesman', 'dd@gmail.com', 'dd12345', 'Fruitlaan', '25', 'Zeerijp', 'Willem Scheepers',
+VALUES (55, 'Danielle', 'Diesman', 'dd@gmail.com', 'dd12345', 'Fruitlaan', '25', 'Zeerijp', 'Willem Scheepers',
         '0611223344', '', 'Kapster');
 
 INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
                    in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
-VALUES (6, 'Marianne', 'Timmer', 'marie@hotmail.com', 'liefdevoorschaatsen123', 'Lagestraat', 1, 'Stedum',
+VALUES (56, 'Marianne', 'Timmer', 'marie@hotmail.com', 'liefdevoorschaatsen123', 'Lagestraat', 1, 'Stedum',
         'Anna Peters', '06123456', 'Gerdine', 'Klant');
 
 INSERT INTO treatments (id, name, duration_in_minutes, price)
