@@ -2,16 +2,17 @@ package nl.novi.kapsalon.dtos;
 
 import nl.novi.kapsalon.models.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BillDto {
     public Long id;
     public Long customerId;
     public Long hairdresserId;
-    public List<Long> treatmentIds;
+    public List<Long> treatmentIds = new ArrayList<>();
 //    public Long productId;
 //    public List<Long> productIds;
-    public List<Product> products;
+    public List<Product> products = new ArrayList<>();
     public Boolean paid;
 
     public Long getId() {

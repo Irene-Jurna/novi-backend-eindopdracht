@@ -13,10 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name="agenda")
+@Table(name="agendas")
 public class Agenda extends BaseModel {
 
     private Long hairdresserId;
     private List<Integer> timeSlots;
-    private Boolean timeSlotAvailable;
 }
