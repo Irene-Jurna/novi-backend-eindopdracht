@@ -10,9 +10,7 @@ public class BillDto {
     public Long customerId;
     public Long hairdresserId;
     public List<Long> treatmentIds = new ArrayList<>();
-//    public Long productId;
-//    public List<Long> productIds;
-    public List<Product> products = new ArrayList<>();
+    public List<Long> productIds = new ArrayList<>();
     public Boolean paid;
 
     public Long getId() {
@@ -30,14 +28,6 @@ public class BillDto {
     public List<Long> getTreatmentIds() {
         return treatmentIds;
     }
-
-//    public Long getProductId() {
-//        return productId;
-//    }
-
-    //    public List<Long> getProductIds() {
-//        return productIds;
-//    }
 
     public Boolean getPaid() {
         return paid;
@@ -59,24 +49,15 @@ public class BillDto {
         this.treatmentIds = treatmentIds;
     }
 
-//    public void setProductIds(List<Long> productIds) {
-//        this.productIds = productIds;
-//    }
-
     public void setPaid(Boolean paid) {
         this.paid = paid;
     }
 
-//    public void setProductId(Long productId) {
-//        this.productId = productId;
-//    }
-
-
-    public List<Product> getProducts() {
-        return products;
+    public List<Long> getProductIds() {
+        return productIds;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductIds(List<Long> productIds) {
+        this.productIds = productIds;
     }
 }

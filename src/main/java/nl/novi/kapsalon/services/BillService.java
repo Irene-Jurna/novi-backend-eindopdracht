@@ -8,25 +8,23 @@ import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.BillRepository;
 import nl.novi.kapsalon.repositories.ProductRepository;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
-import nl.novi.kapsalon.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class BillService {
     private final BillRepository billRepos;
-    private final UserRepository userRepos;
     private final TreatmentRepository treatmentRepos;
     private final ProductRepository productRepos;
     private final ModelMapper modelMapper;
 
 
-    public BillService(BillRepository billRepos, UserRepository userRepos, TreatmentRepository treatmentRepos, ProductRepository productRepos, ModelMapper modelMapper) {
+    public BillService(BillRepository billRepos, TreatmentRepository treatmentRepos, ProductRepository productRepos, ModelMapper modelMapper) {
         this.billRepos = billRepos;
-        this.userRepos = userRepos;
         this.treatmentRepos = treatmentRepos;
         this.productRepos = productRepos;
         this.modelMapper = modelMapper;
@@ -35,19 +33,11 @@ public class BillService {
     public Long createBill(BillDto bDto) {
         Bill bill = transferDtoToBill(bDto);
 
-        // Happy flow
-        // User hairdresser = userRepos.findById(bDto.hairdresserId).get();
-//        List<Product> productList = productRepos.findAllByIdIn(bDto.productIds);
-//        bill.setProducts(productList);
+        List<Product> productList = productRepos.findAllByIdIn(bDto.productIds);
+        bill.setProducts(productList);
 
         List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(bDto.treatmentIds);
         bill.setTreatments(treatmentList);
-
-//        System.out.println("Treatment IDs: " + bDto.getTreatmentIds());
-//        System.out.println("Product IDs: " + bDto.getProductIds());
-
-//        System.out.println("Treatments: " + bill.getTreatments());
-//        System.out.println("Products: " + bill.getProducts());
 
         billRepos.save(bill);
         return bill.getId();
@@ -79,25 +69,11 @@ public class BillService {
         }
     }
 
-//    public void assignProductToBill(Long billId, Long productId) {
-//        var optionalBill = billRepos.findById(billId);
-//        var optionalProduct = productRepos.findById(productId);
-//
-//        if(optionalBill.isPresent() && optionalProduct.isPresent()) {
-//            var bill = optionalBill.get();
-//            var product = optionalProduct.get();
-//            bill.setProduct(product);
-//            billRepos.save(bill);
-//        } else {
-//            throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
-//        }
-//    }
-
     public void assignProductToBill(Long billId, Long productId) {
         var optionalBill = billRepos.findById(billId);
         var optionalProduct = productRepos.findById(productId);
 
-        if(optionalBill.isPresent() && optionalProduct.isPresent()) {
+        if (optionalBill.isPresent() && optionalProduct.isPresent()) {
             var bill = optionalBill.get();
             var product = optionalProduct.get();
             List<Product> productList = bill.getProducts();
@@ -108,20 +84,59 @@ public class BillService {
         }
     }
 
-//    public Bill transferDtoToBill(BillDto bDto) {
-//        return modelMapper.map(bDto, Bill.class);
-//    }
-
-    public Bill transferDtoToBill (BillDto billDto) {
+    public Bill transferDtoToBill(BillDto billDto) {
         Bill bill = new Bill();
         bill.setCustomerId(billDto.getCustomerId());
         bill.setHairdresserId(billDto.getHairdresserId());
         bill.setPaid(billDto.getPaid());
+
+        List<Product> products = productRepos.findAllByIdIn(billDto.getProductIds());
+        bill.setProducts(products);
+
+        List<Treatment> treatments = treatmentRepos.findAllByIdIsIn(billDto.getTreatmentIds());
+        bill.setTreatments(treatments);
+
         billRepos.save(bill);
         return bill;
     }
 
-    public BillDto transferBillToDto(Bill bill) {
-        return modelMapper.map(bill, BillDto.class);
+//    public BillDto transferBillToDto(Bill bill) {
+//        BillDto billDto = new BillDto();
+//        billDto.setId(bill.getId());
+//        billDto.setCustomerId(bill.getCustomerId());
+//        billDto.setHairdresserId(bill.getHairdresserId());
+//        billDto.setPaid(bill.getPaid());
+//
+//        List<Long> productList =
+//        for (Product p : bill.getProducts()) {
+//
+//        }
+//        List<Long> productIds = productRepos.findAllByIdIn()
+//
+//        List<Long> treatmentIds = new ArrayList<>();
+//        for (Treatment treatment : bill.getTreatments()) {
+//            treatmentIds.add(treatment.getId());
+//        }
+//        billDto.setTreatmentIds(treatmentIds);
+//
+//        List<Long> productIds = new ArrayList<>();
+//        for (Product product : bill.getProducts()) {
+//            productIds.add(product.getId());
+//        }
+//        billDto.setProductIds(productIds);
+//
+//        return billDto;
+//    }
+
+        public BillDto transferBillToDto(Bill bill) {
+        BillDto billDto = modelMapper.map(bill, BillDto.class);
+
+        List<Long> productIds = new ArrayList<>();
+        for (Product p : bill.getProducts()) {
+            productIds.add(p.getId());
+        }
+        billDto.setProductIds(productIds);
+        return billDto;
     }
+
 }
