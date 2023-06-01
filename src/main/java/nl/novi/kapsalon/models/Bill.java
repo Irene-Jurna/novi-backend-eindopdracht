@@ -25,9 +25,5 @@ public class Bill extends BaseModel {
     @ManyToMany(mappedBy = "bills")
     private List<Product> products;
 
-//    @ManyToOne
-//    @JoinColumn(name = "product_id")
-//    private Product product;
-
     private Boolean paid;
 }

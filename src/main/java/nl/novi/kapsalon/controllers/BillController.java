@@ -2,10 +2,7 @@ package nl.novi.kapsalon.controllers;
 
 import jakarta.validation.Valid;
 import nl.novi.kapsalon.dtos.BillDto;
-import nl.novi.kapsalon.models.Bill;
 import nl.novi.kapsalon.services.BillService;
-import nl.novi.kapsalon.services.ProductService;
-import nl.novi.kapsalon.services.TreatmentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
