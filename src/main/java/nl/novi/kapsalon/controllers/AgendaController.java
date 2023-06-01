@@ -31,7 +31,7 @@ public class AgendaController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<AgendaDto> updateAgenda(@Valid @PathVariable("id") Long id, AgendaDto agendaDto) {
+    public ResponseEntity<AgendaDto> updateAgenda(@Valid @PathVariable("id") Long id, @RequestBody AgendaDto agendaDto) {
         agendaService.updateAgenda(id, agendaDto);
         return new ResponseEntity<>(agendaDto, HttpStatus.OK);
     }

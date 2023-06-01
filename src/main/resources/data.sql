@@ -29,10 +29,30 @@ INSERT INTO users (id, first_name, last_name, email, password, address, house_nu
 VALUES (56, 'Marianne', 'Timmer', 'marie@hotmail.com', 'liefdevoorschaatsen123', 'Lagestraat', 1, 'Stedum',
         'Anna Peters', '06123456', 'Gerdine', 'Klant');
 
+INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
+                   in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
+VALUES (57, 'Piet', 'Pieters', 'petitpiet@hotmail.com', 'klompenpad4', 'Pruimenhof', 19, 'Loppersum',
+        'Sanne Woldring', '06947289567', 'Martin', 'Klant');
+
+INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
+                   in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
+VALUES (58, 'Louise', 'Keimpema', 'loui@gmail.com', 'moosie456', 'Fruitlaan', 16, 'Loppersum',
+        'Joris Jurna', '0612378965', 'Danielle', 'Klant');
+
+INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
+                   in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
+VALUES (59, 'Jade', 'Mens', 'jmens@yahoo.com', 'sinaasappel1!', 'Badweg', 100, 'Loppersum',
+        'Peter Heres', '0612345678', 'Ellen', 'Klant');
+
+INSERT INTO users (id, first_name, last_name, email, password, address, house_number, residence,
+                   in_case_of_emergency_contact, emergency_contact_phone_number, preferred_hairdresser, notes)
+VALUES (60, 'Peter', 'Heres', 'pheres@hotmail.com', 'jadehartje89', 'Badweg', 100, 'Loppersum',
+        'Jade Mens', '0612345678', 'Ellen', 'Klant');
+
 INSERT INTO treatments (id, name, duration_in_minutes, price)
-VALUES (2, 'Knippen dames en heren', 25, 25);
+VALUES (30, 'Knippen dames en heren', 25, 25);
 INSERT INTO treatments (id, name, duration_in_minutes, price)
-VALUES (3, 'Knippen kinderen', 25, 23.50);
+VALUES (31, 'Knippen kinderen', 25, 23.50);
 INSERT INTO treatments (id, name, duration_in_minutes, price)
 VALUES (32, 'Knippen minderharigen', 20, 20);
 INSERT INTO treatments (id, name, duration_in_minutes, price)
@@ -62,3 +82,7 @@ INSERT INTO products (id, name, purchase_price, price, in_stock)
 VALUES (12, 'Wella Elements conditioner', 5, 7, 40);
 INSERT INTO products (id, name, purchase_price, price, in_stock)
 VALUES (13, 'Wella Elements shampoobar', 8, 14, 30);
+INSERT INTO products (id, name, purchase_price, price, in_stock)
+VALUES (14, 'Wella Elements Beard wax', 10, 15, 20);
+INSERT INTO products (id, name, purchase_price, price, in_stock)
+VALUES (15, 'Wella Elements Baard olie', 11, 16, 10);

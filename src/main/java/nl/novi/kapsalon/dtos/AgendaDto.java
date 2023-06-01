@@ -1,12 +1,12 @@
 package nl.novi.kapsalon.dtos;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AgendaDto {
     public Long id;
     public Long hairdresserId;
-    public List<Integer> timeSlots;
-    public Boolean timeSlotAvailable;
+    public List<Integer> timeSlots = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -20,10 +20,6 @@ public class AgendaDto {
         return timeSlots;
     }
 
-    public Boolean getTimeSlotAvailable() {
-        return timeSlotAvailable;
-    }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -34,9 +30,5 @@ public class AgendaDto {
 
     public void setTimeSlots(List<Integer> timeSlots) {
         this.timeSlots = timeSlots;
-    }
-
-    public void setTimeSlotAvailable(Boolean timeSlotAvailable) {
-        this.timeSlotAvailable = timeSlotAvailable;
     }
 }
