@@ -1,7 +1,5 @@
 package nl.novi.kapsalon.dtos;
 
-import nl.novi.kapsalon.models.Product;
-
 import java.util.ArrayList;
 import java.util.List;
 

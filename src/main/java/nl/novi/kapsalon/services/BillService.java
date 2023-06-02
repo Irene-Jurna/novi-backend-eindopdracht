@@ -90,53 +90,51 @@ public class BillService {
         bill.setHairdresserId(billDto.getHairdresserId());
         bill.setPaid(billDto.getPaid());
 
-        List<Product> products = productRepos.findAllByIdIn(billDto.getProductIds());
-        bill.setProducts(products);
+        if (billDto.productIds != null) {
+            List<Product> products = productRepos.findAllByIdIn(billDto.getProductIds());
+            bill.setProducts(products);
+        }
 
-        List<Treatment> treatments = treatmentRepos.findAllByIdIsIn(billDto.getTreatmentIds());
-        bill.setTreatments(treatments);
+        if (billDto.treatmentIds != null) {
+            List<Treatment> treatments = treatmentRepos.findAllByIdIsIn(billDto.getTreatmentIds());
+            bill.setTreatments(treatments);
+        }
 
         billRepos.save(bill);
         return bill;
     }
 
-//    public BillDto transferBillToDto(Bill bill) {
-//        BillDto billDto = new BillDto();
-//        billDto.setId(bill.getId());
-//        billDto.setCustomerId(bill.getCustomerId());
-//        billDto.setHairdresserId(bill.getHairdresserId());
-//        billDto.setPaid(bill.getPaid());
-//
-//        List<Long> productList =
-//        for (Product p : bill.getProducts()) {
-//
-//        }
-//        List<Long> productIds = productRepos.findAllByIdIn()
-//
-//        List<Long> treatmentIds = new ArrayList<>();
-//        for (Treatment treatment : bill.getTreatments()) {
-//            treatmentIds.add(treatment.getId());
-//        }
-//        billDto.setTreatmentIds(treatmentIds);
-//
-//        List<Long> productIds = new ArrayList<>();
-//        for (Product product : bill.getProducts()) {
-//            productIds.add(product.getId());
-//        }
-//        billDto.setProductIds(productIds);
-//
-//        return billDto;
-//    }
+    public BillDto transferBillToDto(Bill bill) {
+        BillDto billDto = new BillDto();
+        billDto.setId(bill.getId());
+        billDto.setCustomerId(bill.getCustomerId());
+        billDto.setHairdresserId(bill.getHairdresserId());
+        billDto.setPaid(bill.getPaid());
 
-        public BillDto transferBillToDto(Bill bill) {
-        BillDto billDto = modelMapper.map(bill, BillDto.class);
+        List<Long> treatmentIds = new ArrayList<>();
+        for (Treatment treatment : bill.getTreatments()) {
+            treatmentIds.add(treatment.getId());
+        }
+        billDto.setTreatmentIds(treatmentIds);
 
         List<Long> productIds = new ArrayList<>();
-        for (Product p : bill.getProducts()) {
-            productIds.add(p.getId());
+        for (Product product : bill.getProducts()) {
+            productIds.add(product.getId());
         }
         billDto.setProductIds(productIds);
+
         return billDto;
     }
+
+//        public BillDto transferBillToDto(Bill bill) {
+//        BillDto billDto = modelMapper.map(bill, BillDto.class);
+//
+//        List<Long> productIds = new ArrayList<>();
+//        for (Product p : bill.getProducts()) {
+//            productIds.add(p.getId());
+//        }
+//        billDto.setProductIds(productIds);
+//        return billDto;
+//    }
 
 }
