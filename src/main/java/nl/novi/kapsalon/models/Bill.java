@@ -19,10 +19,16 @@ public class Bill extends BaseModel {
 
     private Long hairdresserId;
 
-    @ManyToMany(mappedBy = "bills")
+    @ManyToMany
+    @JoinTable(name = "bills_treatments",
+            joinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id"))
     private List<Treatment> treatments;
 
-    @ManyToMany(mappedBy = "bills")
+    @ManyToMany
+    @JoinTable(name = "bills_products",
+            joinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))
     private List<Product> products;
 
     private Boolean paid;
