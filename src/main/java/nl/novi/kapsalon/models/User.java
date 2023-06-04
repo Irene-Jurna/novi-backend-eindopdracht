@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Collection;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
@@ -26,5 +28,8 @@ public class User extends BaseModel {
     private String emergencyContactPhoneNumber;
     private String preferredHairdresser;
     private String notes;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Collection<Role> roles;
 
 }
