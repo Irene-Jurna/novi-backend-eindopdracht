@@ -1,0 +1,78 @@
+package nl.novi.kapsalon.services;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
+
+import java.security.Key;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+@Service
+public class JwtService {
+    private final static String SECRET_KEY = "yabbadabbadooyabbadabbadooyabbadabbadooyabbadabbadoo";
+
+    // Key opvragen (via base64 decode, elk karakter is 6 bits)
+    private Key getSigningKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
+
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
+    }
+
+    private <T> T extractClaim(String token, Function<Claims, T>
+            claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody();
+    }
+
+    private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+
+    public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
+    }
+
+    // Levensduur van de token kun je zelf instellen (valid period)
+    private String createToken(Map<String, Object> claims, String
+            subject) {
+        long validPeriod = 1000 * 60 * 60 * 24 * 10; // 10 days in ms
+//            long validPeriod = 1000 * 60; // 1 minute
+
+        // Geeft aantal ms sinds 19.. nog wat
+        long currentTime = System.currentTimeMillis();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(currentTime))
+                .setExpiration(new Date(currentTime + validPeriod))
+                // Encrypten
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    // Validate haalt de username uit de token > checkt of die gelijk is aan de username van het userdetails object > check of de token niet expired is
+    public Boolean validateToken(String token, UserDetails
+            userDetails) {
+        final String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) &&
+                !isTokenExpired(token);
+    }
+}
