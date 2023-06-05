@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
@@ -33,4 +31,7 @@ public class User extends BaseModel {
     @JoinColumn(name = "roleName")
     private Role role;
 
+    public Role getRole() {
+        return role;
+    }
 }
