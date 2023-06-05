@@ -1,25 +1,23 @@
 package nl.novi.kapsalon.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.Collection;
+import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 
 @Entity
 @Table(name = "roles")
-public class Role extends BaseModel {
+public class Role {
+
+    @Id
     private String roleName;
 
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    @OneToMany
+    private List<User> users;
 }

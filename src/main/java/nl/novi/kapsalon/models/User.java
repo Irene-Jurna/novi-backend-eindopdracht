@@ -29,7 +29,8 @@ public class User extends BaseModel {
     private String preferredHairdresser;
     private String notes;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Collection<Role> roles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "roleName")
+    private Role role;
 
 }
