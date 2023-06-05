@@ -17,11 +17,12 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepos;
     private final RoleRepository roleRepos;
-//    private final PasswordEncoder encoder;
+    private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepos, RoleRepository roleRepos) {
+    public UserService(UserRepository userRepos, RoleRepository roleRepos, PasswordEncoder encoder) {
         this.userRepos = userRepos;
         this.roleRepos = roleRepos;
+        this.encoder = encoder;
     }
 
     public Long createUser(UserDto userDto) {

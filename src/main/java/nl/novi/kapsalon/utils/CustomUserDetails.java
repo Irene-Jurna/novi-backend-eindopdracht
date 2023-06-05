@@ -1,8 +1,16 @@
-package nl.novi.kapsalon.securities;
+package nl.novi.kapsalon.utils;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public abstract class CustomUserDetails implements UserDetails {
+import java.util.Collection;
+
+public class CustomUserDetails implements UserDetails {
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
 
     @Override
     public String getPassword() {
