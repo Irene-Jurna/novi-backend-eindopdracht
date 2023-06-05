@@ -3,6 +3,7 @@ package nl.novi.kapsalon.dtos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import nl.novi.kapsalon.models.Role;
 
 public class UserDto {
     public Long id;
@@ -26,4 +27,5 @@ public class UserDto {
     public String emergencyContactPhoneNumber;
     public String preferredHairdresser;
     public String notes;
+    public Role role;
 }

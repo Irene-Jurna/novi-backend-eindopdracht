@@ -4,7 +4,9 @@ import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.exceptions.DuplicateNameException;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
+import nl.novi.kapsalon.repositories.RoleRepository;
 import nl.novi.kapsalon.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,9 +16,12 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepos;
+    private final RoleRepository roleRepos;
+//    private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepos) {
+    public UserService(UserRepository userRepos, RoleRepository roleRepos) {
         this.userRepos = userRepos;
+        this.roleRepos = roleRepos;
     }
 
     public Long createUser(UserDto userDto) {
@@ -79,6 +84,7 @@ public class UserService {
         user.setEmergencyContactPhoneNumber(userDto.emergencyContactPhoneNumber);
         user.setPreferredHairdresser(userDto.preferredHairdresser);
         user.setNotes(userDto.notes);
+        user.setRole(userDto.role);
         userRepos.save(user);
         return user;
     }
@@ -97,6 +103,7 @@ public class UserService {
         userDto.emergencyContactPhoneNumber = user.getEmergencyContactPhoneNumber();
         userDto.preferredHairdresser = user.getPreferredHairdresser();
         userDto.notes = user.getNotes();
+        userDto.role = user.getRole();
         return userDto;
     }
 
