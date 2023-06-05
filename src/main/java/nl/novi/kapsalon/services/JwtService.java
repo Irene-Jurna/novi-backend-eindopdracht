@@ -18,7 +18,6 @@ import java.util.function.Function;
 public class JwtService {
     private final static String SECRET_KEY = "yabbadabbadooyabbadabbadooyabbadabbadooyabbadabbadoo";
 
-    // Key opvragen (via base64 decode, elk karakter is 6 bits)
     private Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
@@ -50,13 +49,11 @@ public class JwtService {
         return createToken(claims, userDetails.getUsername());
     }
 
-    // Levensduur van de token kun je zelf instellen (valid period)
     private String createToken(Map<String, Object> claims, String
             subject) {
         long validPeriod = 1000 * 60 * 60 * 24 * 10; // 10 days in ms
 //            long validPeriod = 1000 * 60; // 1 minute
 
-        // Geeft aantal ms sinds 19.. nog wat
         long currentTime = System.currentTimeMillis();
         return Jwts.builder()
                 .setClaims(claims)
