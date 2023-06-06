@@ -76,8 +76,9 @@ public class UserService {
     public User transferDtoToUser(User user, UserDto userDto) {
         user.setFirstName(userDto.firstName);
         user.setLastName(userDto.lastName);
+        user.setUsername(userDto.username);
         user.setEmail(userDto.email);
-        user.setPassword(userDto.password);
+        user.setPassword(encoder.encode(userDto.password));
         user.setAddress(userDto.address);
         user.setHouseNumber(userDto.houseNumber);
         user.setResidence(userDto.residence);
@@ -95,6 +96,7 @@ public class UserService {
         userDto.id = user.getId();
         userDto.firstName = user.getFirstName();
         userDto.lastName = user.getLastName();
+        userDto.username = user.getUsername();
         userDto.email = user.getEmail();
         userDto.password = user.getPassword();
         userDto.address = user.getAddress();
