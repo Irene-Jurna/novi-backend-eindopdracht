@@ -12,9 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -56,15 +54,19 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/users").permitAll()
-                .requestMatchers(HttpMethod.POST, "/users").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/agenda").permitAll()
+                .requestMatchers(HttpMethod.POST, "/agenda").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers(HttpMethod.PUT, "/agenda/**").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers(HttpMethod.DELETE, "/agenda/**").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers("/bill/**").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers("/products/**").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers("/treatments/**").hasAnyAuthority("Hairdresser", "Owner")
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers("/secret").hasAuthority("ADMIN")
-                // Deze is veranderd tov vorige week (hasRole --> hasAuthority)
-                .requestMatchers("/**").hasAnyAuthority("USER", "ADMIN")
+                .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                .requestMatchers("/**").hasAnyAuthority("Hairdresser", "Owner")
                 .anyRequest().denyAll()
                 .and()
-                // Deze is toegevoegd, filter (object met de juiste parameters, zodat die in de filterChain eindigt)
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
