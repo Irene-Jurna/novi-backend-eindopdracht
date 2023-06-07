@@ -19,17 +19,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            Long userId = Long.parseLong(username);
-            Optional<User> optionalUser = userRepos.findById(userId);
-            if (optionalUser.isPresent()) {
-                User user = optionalUser.get();
-                return new CustomUserDetails(user);
-            } else {
-                throw new UsernameNotFoundException("User not found with id: " + userId);
-            }
-        } catch (NumberFormatException e) {
-            throw new UsernameNotFoundException("Invalid user id format");
+        // Hier zorgen dat er een userDetails object uitkomt. Dat doe je door in de repos te zoeken op username
+        Optional<User> ou = userRepos.findUserByUsername(username);
+        if (ou.isPresent()) {
+            User user = ou.get();
+            return new CustomUserDetails(user);
+        } else {
+            throw new UsernameNotFoundException(username);
         }
     }
 }
