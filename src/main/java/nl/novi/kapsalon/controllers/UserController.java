@@ -23,6 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @PreAuthorize("permitAll()")
     @PostMapping("")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
@@ -41,31 +42,35 @@ public class UserController {
         return ResponseEntity.created(uri).body(userDto);
     }
 
+    @PreAuthorize("hasAnyRole('Hairdresser', 'Owner')")
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> dtoList = userService.getAllUsers();
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         UserDto userDto = userService.getUser(id);
         return ResponseEntity.ok(userDto);
     }
 
-    @PreAuthorize("hasR('deleteUser')")
+    @PreAuthorize("hasAnyRole('Hairdresser', 'Owner')")
     @GetMapping("search")
     public ResponseEntity<List<UserDto>> getUsersBasedOnSubString(@RequestParam String subString) {
         List<UserDto> usersWithSubstring = userService.getUsersBasedOnSubString(subString, subString);
         return ResponseEntity.ok(usersWithSubstring);
     }
 
+    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@Valid @PathVariable("id") Long id, @RequestBody UserDto userDto) {
         userService.updateUser(id, userDto);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
