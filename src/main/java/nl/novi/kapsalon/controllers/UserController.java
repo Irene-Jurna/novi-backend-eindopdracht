@@ -5,6 +5,7 @@ import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping("users")
 public class UserController {
-
     private final UserService userService;
 
     public UserController(UserService userService) {
@@ -53,6 +53,7 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
+    @PreAuthorize("hasR('deleteUser')")
     @GetMapping("search")
     public ResponseEntity<List<UserDto>> getUsersBasedOnSubString(@RequestParam String subString) {
         List<UserDto> usersWithSubstring = userService.getUsersBasedOnSubString(subString, subString);
