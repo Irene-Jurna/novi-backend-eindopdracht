@@ -3,9 +3,11 @@ package nl.novi.kapsalon.services;
 import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.utils.CustomUserDetails;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import java.util.Optional;
 
