@@ -1,5 +1,7 @@
 package nl.novi.kapsalon.configs;
 
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import nl.novi.kapsalon.filters.JwtRequestFilter;
 import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.services.CustomUserDetailsService;
@@ -9,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,14 +23,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+//@EnableMethodSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
     private final JwtService jwtService;
     private final UserRepository userRepository;
-
-    public SecurityConfig(JwtService service, UserRepository userRepos) {
-        this.jwtService = service;
-        this.userRepository = userRepos;
-    }
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http, PasswordEncoder encoder, UserDetailsService udService) throws Exception {
@@ -50,7 +50,8 @@ public class SecurityConfig{
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @SneakyThrows
+    public SecurityFilterChain filterChain(HttpSecurity http) {
         http
                 .httpBasic().disable()
                 .authorizeHttpRequests()
@@ -71,4 +72,17 @@ public class SecurityConfig{
 
         return http.build();
     }
+
+//    @Bean
+//    @SneakyThrows
+//    public SecurityFilterChain filterChain(HttpSecurity http) {
+//        return http
+//                .csrf().disable()
+//                .cors().disable()
+//                .authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
+//                .httpBasic()
+//                .authenticationEntryPoint((request, response, authException) -> response.sendError(401))
+//                .and()
+//                .build();
+//    }
 }
