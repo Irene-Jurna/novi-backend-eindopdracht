@@ -63,7 +63,6 @@ public class AgendaService {
 
     public AgendaDto transferAgendaToDto(Agenda agenda) {
         AgendaDto agendaDto = modelMapper.map(agenda, AgendaDto.class);
-//        agendaDto.setHairdresserId(agenda.getHairdresserId());
         return agendaDto;
     }
 }

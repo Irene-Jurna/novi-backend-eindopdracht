@@ -63,7 +63,6 @@ public class ProductService {
 
     public ProductDto transferProductToDto(Product product) {
         ProductDto productDto = modelMapper.map(product, ProductDto.class);
-//        productDto.setName(product.getName());
         return productDto;
     }
 

@@ -1,12 +1,9 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.TreatmentDto;
-import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Treatment;
-import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
-import org.hibernate.MultiIdentifierLoadAccess;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -73,26 +70,9 @@ public class TreatmentService {
         return modelMapper.map(tDto, Treatment.class);
     }
 
-//    public Treatment transferDtoToTreatment(Treatment treat, TreatmentDto tdto) {
-//        treat.setName(tdto.name);
-//        treat.setDurationInMinutes(tdto.durationInMinutes);
-//        treat.setPrice(tdto.price);
-//        treatmentRepos.save(treat);
-//        return treat;
-//    }
-
     public TreatmentDto transferTreatmentToDto(Treatment treatment) {
         TreatmentDto treatmentDto = modelMapper.map(treatment, TreatmentDto.class);
-        treatmentDto.setName(treatment.getName());
         return treatmentDto;
     }
 
-//    public TreatmentDto transferTreatmentToDto(Treatment treatment) {
-//        TreatmentDto treatmentDto = new TreatmentDto();
-//        treatmentDto.id = treatment.getId();
-//        treatmentDto.name = treatment.getName();
-//        treatmentDto.durationInMinutes = treatment.getDurationInMinutes();
-//        treatmentDto.price = treatment.getPrice();
-//        return treatmentDto;
-//    }
 }
