@@ -101,11 +101,7 @@ public class BillService {
     }
 
     public BillDto transferBillToDto(Bill bill) {
-        BillDto billDto = new BillDto();
-        billDto.setId(bill.getId());
-        billDto.setCustomerId(bill.getCustomerId());
-        billDto.setHairdresserId(bill.getHairdresserId());
-        billDto.setPaid(bill.getPaid());
+        BillDto billDto = modelMapper.map(bill, BillDto.class);
 
         List<Long> treatmentIds = new ArrayList<>();
         for (Treatment treatment : bill.getTreatments()) {
