@@ -85,10 +85,7 @@ public class BillService {
     }
 
     public Bill transferDtoToBill(BillDto billDto) {
-        Bill bill = new Bill();
-        bill.setCustomerId(billDto.getCustomerId());
-        bill.setHairdresserId(billDto.getHairdresserId());
-        bill.setPaid(billDto.getPaid());
+        Bill bill = modelMapper.map(billDto, Bill.class);
 
         if (billDto.productIds != null) {
             List<Product> products = productRepos.findAllByIdIn(billDto.getProductIds());
@@ -100,7 +97,6 @@ public class BillService {
             bill.setTreatments(treatments);
         }
 
-        billRepos.save(bill);
         return bill;
     }
 
@@ -125,16 +121,5 @@ public class BillService {
 
         return billDto;
     }
-
-//        public BillDto transferBillToDto(Bill bill) {
-//        BillDto billDto = modelMapper.map(bill, BillDto.class);
-//
-//        List<Long> productIds = new ArrayList<>();
-//        for (Product p : bill.getProducts()) {
-//            productIds.add(p.getId());
-//        }
-//        billDto.setProductIds(productIds);
-//        return billDto;
-//    }
 
 }
