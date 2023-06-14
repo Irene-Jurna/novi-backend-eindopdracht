@@ -6,6 +6,7 @@ import nl.novi.kapsalon.filters.JwtRequestFilter;
 import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.services.CustomUserDetailsService;
 import nl.novi.kapsalon.services.JwtService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,7 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@ConditionalOnWebApplication
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtService jwtService;
@@ -62,9 +64,10 @@ public class SecurityConfig {
                 .requestMatchers("/bill/**").hasAnyAuthority("Hairdresser", "Owner")
                 .requestMatchers("/products/**").hasAnyAuthority("Hairdresser", "Owner")
                 .requestMatchers("/treatments/**").hasAnyAuthority("Hairdresser", "Owner")
+                .requestMatchers("/users").authenticated()
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
-                .requestMatchers("/**").permitAll()
-                .anyRequest().denyAll()
+                //.requestMatchers("/**").permitAll()
+//                .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
@@ -72,17 +75,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
-//    @Bean
-//    @SneakyThrows
-//    public SecurityFilterChain filterChain(HttpSecurity http) {
-//        return http
-//                .csrf().disable()
-//                .cors().disable()
-//                .authorizeHttpRequests(customizer -> customizer.anyRequest().authenticated())
-//                .httpBasic()
-//                .authenticationEntryPoint((request, response, authException) -> response.sendError(401))
-//                .and()
-//                .build();
-//    }
 }

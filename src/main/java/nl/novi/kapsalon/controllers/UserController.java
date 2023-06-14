@@ -1,11 +1,13 @@
 package nl.novi.kapsalon.controllers;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +44,8 @@ public class UserController {
         return ResponseEntity.created(uri).body(userDto);
     }
 
-    @PreAuthorize("hasAnyRole('Hairdresser', 'Owner')")
+    @PreAuthorize("hasRole('ROLE_HAIRDRESSER') or hasRole ('ROLE_OWNER')")
+//    @RolesAllowed({"ROLE_HAIRDRESSER", "ROLE_OWNER"})
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> dtoList = userService.getAllUsers();

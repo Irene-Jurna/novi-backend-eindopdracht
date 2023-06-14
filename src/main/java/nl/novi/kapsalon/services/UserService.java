@@ -1,11 +1,13 @@
 package nl.novi.kapsalon.services;
 
+import jakarta.annotation.security.RolesAllowed;
 import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.exceptions.DuplicateNameException;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.RoleRepository;
 import nl.novi.kapsalon.repositories.UserRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,6 @@
 package nl.novi.kapsalon.models;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +21,10 @@ public abstract class BaseModel {
 
     // Of Timestamp gebruiken? private Timestamp created (zonder @CreatedDate, met @JsonIgnore)
     @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant created;
 
     @LastModifiedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private Instant lastUpdated;
 }
