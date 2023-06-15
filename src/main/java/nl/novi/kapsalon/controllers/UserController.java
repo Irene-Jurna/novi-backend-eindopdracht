@@ -23,7 +23,6 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @PreAuthorize("permitAll()")
     @PostMapping("")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
