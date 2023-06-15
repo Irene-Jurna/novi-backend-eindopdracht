@@ -1,13 +1,11 @@
 package nl.novi.kapsalon.controllers;
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +23,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PreAuthorize("permitAll()")
+//    @PreAuthorize("permitAll()")
     @PostMapping("")
     public ResponseEntity<Object> createUser(@Valid @RequestBody UserDto userDto, BindingResult br) {
 
@@ -44,36 +42,35 @@ public class UserController {
         return ResponseEntity.created(uri).body(userDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_HAIRDRESSER') or hasRole ('ROLE_OWNER')")
-//    @RolesAllowed({"ROLE_HAIRDRESSER", "ROLE_OWNER"})
+    @PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @GetMapping("")
     public ResponseEntity<List<UserDto>> getAllUsers() {
         List<UserDto> dtoList = userService.getAllUsers();
         return ResponseEntity.ok(dtoList);
     }
 
-    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
+    @PreAuthorize("#id == principal.getId() or hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
         UserDto userDto = userService.getUser(id);
         return ResponseEntity.ok(userDto);
     }
 
-    @PreAuthorize("hasAnyRole('Hairdresser', 'Owner')")
+    @PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @GetMapping("search")
     public ResponseEntity<List<UserDto>> getUsersBasedOnSubString(@RequestParam String subString) {
         List<UserDto> usersWithSubstring = userService.getUsersBasedOnSubString(subString, subString);
         return ResponseEntity.ok(usersWithSubstring);
     }
 
-    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
+    @PreAuthorize("#id == principal.getId() or hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @PutMapping("{id}")
     public ResponseEntity<UserDto> updateUser(@Valid @PathVariable("id") Long id, @RequestBody UserDto userDto) {
         userService.updateUser(id, userDto);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("#id == authentication.principal.id or hasAnyRole('Hairdresser', 'Owner')")
+    @PreAuthorize("#id == principal.getId() or hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
