@@ -57,10 +57,6 @@ public class SecurityConfig {
         http
                 .httpBasic().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/agenda").permitAll()
-                .requestMatchers(HttpMethod.POST, "/agenda").hasAnyAuthority("Hairdresser", "Owner")
-                .requestMatchers(HttpMethod.PUT, "/agenda/**").hasAnyAuthority("Hairdresser", "Owner")
-                .requestMatchers(HttpMethod.DELETE, "/agenda/**").hasAnyAuthority("Hairdresser", "Owner")
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
                 .requestMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated()
@@ -68,7 +64,6 @@ public class SecurityConfig {
                 .addFilterBefore(new JwtRequestFilter(jwtService, userDetailsService()), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         return http.build();
     }
 }
