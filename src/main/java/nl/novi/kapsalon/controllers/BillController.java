@@ -5,10 +5,12 @@ import nl.novi.kapsalon.dtos.BillDto;
 import nl.novi.kapsalon.services.BillService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("bill")
+@PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
 public class BillController {
     private final BillService billService;
 
