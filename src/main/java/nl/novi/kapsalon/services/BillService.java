@@ -1,14 +1,16 @@
 package nl.novi.kapsalon.services;
 
-import nl.novi.kapsalon.dtos.BillDto;
+import nl.novi.kapsalon.dtos.BillInputDto;
 import nl.novi.kapsalon.dtos.BillOutputDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Bill;
 import nl.novi.kapsalon.models.Product;
 import nl.novi.kapsalon.models.Treatment;
+import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.BillRepository;
 import nl.novi.kapsalon.repositories.ProductRepository;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
+import nl.novi.kapsalon.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,17 +23,19 @@ public class BillService {
     private final BillRepository billRepos;
     private final TreatmentRepository treatmentRepos;
     private final ProductRepository productRepos;
+    private final UserRepository userRepos;
     private final ModelMapper modelMapper;
 
 
-    public BillService(BillRepository billRepos, TreatmentRepository treatmentRepos, ProductRepository productRepos, ModelMapper modelMapper) {
+    public BillService(BillRepository billRepos, TreatmentRepository treatmentRepos, ProductRepository productRepos, UserRepository userRepos, ModelMapper modelMapper) {
         this.billRepos = billRepos;
         this.treatmentRepos = treatmentRepos;
         this.productRepos = productRepos;
+        this.userRepos = userRepos;
         this.modelMapper = modelMapper;
     }
 
-    public BillOutputDto createBill(BillDto bDto) {
+    public BillOutputDto createBill(BillInputDto bDto) {
         Bill bill = transferDtoToBill(bDto);
 
         List<Product> productList = productRepos.findAllByIdIn(bDto.productIds);
@@ -51,17 +55,20 @@ public class BillService {
         }
 
         List<Long> treatmentIds = bDto.getTreatmentIds();
-        BillOutputDto billOutputDto = calculateAmountOnBill(treatmentIds);
+        double totalPrice = calculateAmountOnBill(treatmentIds);
 
-        return billOutputDto;
+        BillOutputDto boDto = convertBillToOutputDto(bill);
+        boDto.setTotalPrice(totalPrice);
+
+        return boDto;
     }
 
-    public BillDto getBill(Long id) {
+    public BillInputDto getBill(Long id) {
         Bill bill = billRepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bon niet gevonden"));
         return transferBillToDto(bill);
     }
 
-    public void updateBill(Long id, BillDto billForUpdate) {
+    public void updateBill(Long id, BillInputDto billForUpdate) {
         Optional<Bill> optionalBill = billRepos.findById(id);
         if (optionalBill.isEmpty()) {
             throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
@@ -122,19 +129,19 @@ public class BillService {
         }
     }
 
-    public BillOutputDto calculateAmountOnBill(List<Long> treatmentIds) {
+    public double calculateAmountOnBill(List<Long> treatmentIds) {
         List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
-        BillOutputDto billOutputDto = new BillOutputDto();
+
         double totalPrice = 0;
         for (Treatment treat : treatmentList) {
             totalPrice = totalPrice + treat.getPrice();
         }
-        billOutputDto.setTotalPrice(totalPrice);
-        return billOutputDto;
+
+        return totalPrice;
     }
 
 
-    public Bill transferDtoToBill(BillDto billDto) {
+    public Bill transferDtoToBill(BillInputDto billDto) {
         Bill bill = modelMapper.map(billDto, Bill.class);
 
         if (billDto.productIds != null) {
@@ -150,8 +157,8 @@ public class BillService {
         return bill;
     }
 
-    public BillDto transferBillToDto(Bill bill) {
-        BillDto billDto = modelMapper.map(bill, BillDto.class);
+    public BillInputDto transferBillToDto(Bill bill) {
+        BillInputDto billDto = modelMapper.map(bill, BillInputDto.class);
 
         List<Long> treatmentIds = new ArrayList<>();
         for (Treatment treatment : bill.getTreatments()) {
@@ -166,6 +173,23 @@ public class BillService {
         billDto.setProductIds(productIds);
 
         return billDto;
+    }
+
+    private BillOutputDto convertBillToOutputDto(Bill bill) {
+        BillOutputDto boDto = modelMapper.map(bill, BillOutputDto.class);
+
+        User customer = userRepos.findById(bill.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Klant onbekend"));
+        User hairdresser = userRepos.findById(bill.getHairdresserId())
+                .orElseThrow(() -> new ResourceNotFoundException("Kapster onbekend"));
+
+        String customerFullName = customer.getFirstName() + " " + customer.getLastName();
+        String hairdresserFullName = hairdresser.getFirstName() + " " + hairdresser.getLastName();
+
+        boDto.setCustomerName(customerFullName);
+        boDto.setHairdresserName(hairdresserFullName);
+
+        return boDto;
     }
 
 }
