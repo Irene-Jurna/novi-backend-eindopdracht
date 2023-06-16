@@ -10,7 +10,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "products")
 public class Product extends BaseModel {
@@ -22,8 +21,5 @@ public class Product extends BaseModel {
 
     @ManyToMany(mappedBy = "products")
     private List<Bill> bills;
-
-//    @OneToMany
-//    private List<Bill> bills;
 
 }
