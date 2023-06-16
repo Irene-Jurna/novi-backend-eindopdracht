@@ -1,6 +1,7 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.BillDto;
+import nl.novi.kapsalon.dtos.BillOutputDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Bill;
 import nl.novi.kapsalon.models.Product;
@@ -30,7 +31,7 @@ public class BillService {
         this.modelMapper = modelMapper;
     }
 
-    public Long createBill(BillDto bDto) {
+    public BillOutputDto createBill(BillDto bDto) {
         Bill bill = transferDtoToBill(bDto);
 
         List<Product> productList = productRepos.findAllByIdIn(bDto.productIds);
@@ -49,7 +50,10 @@ public class BillService {
             assignTreatmentToBill(bill.getId(), treatmentId);
         }
 
-        return bill.getId();
+        List<Long> treatmentIds = bDto.getTreatmentIds();
+        BillOutputDto billOutputDto = calculateAmountOnBill(treatmentIds);
+
+        return billOutputDto;
     }
 
     public BillDto getBill(Long id) {
@@ -116,6 +120,17 @@ public class BillService {
         } else {
             throw new ResourceNotFoundException("Het rekening-id en/of het behandelings-id staan niet in het systeem");
         }
+    }
+
+    public BillOutputDto calculateAmountOnBill(List<Long> treatmentIds) {
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
+        BillOutputDto billOutputDto = new BillOutputDto();
+        double totalPrice = 0;
+        for (Treatment treat : treatmentList) {
+            totalPrice = totalPrice + treat.getPrice();
+        }
+        billOutputDto.setTotalPrice(totalPrice);
+        return billOutputDto;
     }
 
 

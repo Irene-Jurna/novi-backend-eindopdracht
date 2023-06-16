@@ -1,6 +1,5 @@
 package nl.novi.kapsalon.dtos;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
