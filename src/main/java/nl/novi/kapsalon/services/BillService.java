@@ -45,6 +45,10 @@ public class BillService {
             assignProductToBill(bill.getId(), productId);
         }
 
+        for (Long treatmentId : bDto.getTreatmentIds()) {
+            assignTreatmentToBill(bill.getId(), treatmentId);
+        }
+
         return bill.getId();
     }
 
@@ -91,6 +95,26 @@ public class BillService {
             }
         } else {
             throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
+        }
+    }
+
+    public void assignTreatmentToBill(Long billId, Long treatmentId) {
+        Optional<Bill> optionalBill = billRepos.findById(billId);
+        Optional<Treatment> optionalTreatment = treatmentRepos.findById(treatmentId);
+
+        if (optionalBill.isPresent() && optionalTreatment.isPresent()) {
+            Bill bill = optionalBill.get();
+            Treatment treatment = optionalTreatment.get();
+
+            if (!bill.getTreatments().contains(treatment)) {
+                List<Treatment> treatmentList = bill.getTreatments();
+                treatmentList.add(treatment);
+                bill.setTreatments(treatmentList);
+
+                billRepos.save(bill);
+            }
+        } else {
+            throw new ResourceNotFoundException("Het rekening-id en/of het behandelings-id staan niet in het systeem");
         }
     }
 
