@@ -25,7 +25,7 @@ public class Bill extends BaseModel {
             inverseJoinColumns = @JoinColumn(name = "treatment_id", referencedColumnName = "id"))
     private List<Treatment> treatments;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "bills_products",
             joinColumns = @JoinColumn(name = "bill_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "product_id", referencedColumnName = "id"))

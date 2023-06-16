@@ -39,7 +39,12 @@ public class BillService {
         List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(bDto.treatmentIds);
         bill.setTreatments(treatmentList);
 
-        billRepos.save(bill);
+        bill = billRepos.save(bill);
+
+        for (Long productId : bDto.getProductIds()) {
+            assignProductToBill(bill.getId(), productId);
+        }
+
         return bill.getId();
     }
 
@@ -70,19 +75,25 @@ public class BillService {
     }
 
     public void assignProductToBill(Long billId, Long productId) {
-        var optionalBill = billRepos.findById(billId);
-        var optionalProduct = productRepos.findById(productId);
+        Optional<Bill> optionalBill = billRepos.findById(billId);
+        Optional<Product> optionalProduct = productRepos.findById(productId);
 
         if (optionalBill.isPresent() && optionalProduct.isPresent()) {
-            var bill = optionalBill.get();
-            var product = optionalProduct.get();
-            List<Product> productList = bill.getProducts();
-            productList.add(product);
-            billRepos.save(bill);
+            Bill bill = optionalBill.get();
+            Product product = optionalProduct.get();
+
+            if (!bill.getProducts().contains(product)) {
+                List<Product> productList = bill.getProducts();
+                productList.add(product);
+                bill.setProducts(productList);
+
+                billRepos.save(bill);
+            }
         } else {
             throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
         }
     }
+
 
     public Bill transferDtoToBill(BillDto billDto) {
         Bill bill = modelMapper.map(billDto, Bill.class);

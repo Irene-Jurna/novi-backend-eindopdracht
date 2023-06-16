@@ -1,12 +1,20 @@
 package nl.novi.kapsalon.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillDto {
     public Long id;
+
+    @NotNull
     public Long customerId;
+
+    @NotNull
     public Long hairdresserId;
+
     public List<Long> treatmentIds = new ArrayList<>();
     public List<Long> productIds = new ArrayList<>();
     public Boolean paid;
