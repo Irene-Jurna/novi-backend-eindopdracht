@@ -1,7 +1,7 @@
 package nl.novi.kapsalon.controllers;
 
 import jakarta.validation.Valid;
-import nl.novi.kapsalon.dtos.BillDto;
+import nl.novi.kapsalon.dtos.BillInputDto;
 import nl.novi.kapsalon.dtos.BillOutputDto;
 import nl.novi.kapsalon.services.BillService;
 import org.springframework.http.HttpStatus;
@@ -20,19 +20,19 @@ public class BillController {
     }
 
     @PostMapping("")
-    public ResponseEntity<BillOutputDto> createBill(@Valid @RequestBody BillDto bDto) {
+    public ResponseEntity<BillOutputDto> createBill(@Valid @RequestBody BillInputDto bDto) {
         BillOutputDto boDto = billService.createBill(bDto);
         return new ResponseEntity<>(boDto, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<BillDto> getBill(@PathVariable Long id) {
-        BillDto billDto = billService.getBill(id);
+    public ResponseEntity<BillInputDto> getBill(@PathVariable Long id) {
+        BillInputDto billDto = billService.getBill(id);
         return ResponseEntity.ok(billDto);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<BillDto> updateBill(@PathVariable("id") Long id, @RequestBody BillDto billDto) {
+    public ResponseEntity<BillInputDto> updateBill(@PathVariable("id") Long id, @RequestBody BillInputDto billDto) {
         billService.updateBill(id, billDto);
         return new ResponseEntity<>(billDto, HttpStatus.NO_CONTENT);
     }

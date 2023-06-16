@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BillDto {
+public class BillInputDto {
     public Long id;
 
     @NotNull
