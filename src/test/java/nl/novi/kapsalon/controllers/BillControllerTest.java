@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ import java.util.Arrays;
 //@MockitoSettings(strictness = Strictness.LENIENT)
 @WebMvcTest(BillController.class)
 @ActiveProfiles("test")
-@AutoConfigureMockMvc(addFilters = false)
+//@AutoConfigureMockMvc(addFilters = false)
 class BillControllerTest {
 
     @Autowired
@@ -49,19 +50,16 @@ class BillControllerTest {
     BillService billService;
 
     User testUser;
-    Role ROLE_OWNER;
+    Role testOwner = new Role("ROLE_OWNER");
 
     @BeforeEach
     public void setUp() {
-        Role testOwner = new Role("ROLE_OWNER");
-
-        User testUser = new User("Test", "User", "TestUser", "testuser@email.com", "testpassword", "testadres", 1, "testcity", "test contactperson", "test number", "test hairdresser", "test notes", testOwner);
+        this.testUser = new User("Test", "User", "TestUser", "testuser@email.com", "testpassword", "testadres", 1, "testcity", "test contactperson", "test number", "test hairdresser", "test notes", testOwner);
     }
 
-//    @Disabled
+    @Disabled
     @Test
-//    @WithUserDetails("testUser")
-//    @WithMockUser(username = "testUser", roles = "ROLE_OWNER")
+    @WithMockUser(username = "testUser", password = "testpassword", roles = "ROLE_OWNER")
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
 
