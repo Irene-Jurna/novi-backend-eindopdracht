@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -35,6 +36,7 @@ import java.util.Arrays;
 //@MockitoSettings(strictness = Strictness.LENIENT)
 @WebMvcTest(BillController.class)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 class BillControllerTest {
 
     @Autowired
@@ -58,7 +60,7 @@ class BillControllerTest {
 
 //    @Disabled
     @Test
-    @WithUserDetails("testUser")
+//    @WithUserDetails("testUser")
 //    @WithMockUser(username = "testUser", roles = "ROLE_OWNER")
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
