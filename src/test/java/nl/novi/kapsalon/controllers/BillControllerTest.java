@@ -6,16 +6,22 @@ import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.services.BillService;
 import nl.novi.kapsalon.services.JwtService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -24,6 +30,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+//@ExtendWith(MockitoExtension.class)
+@ExtendWith(SpringExtension.class)
+//@MockitoSettings(strictness = Strictness.LENIENT)
 @WebMvcTest(BillController.class)
 @ActiveProfiles("test")
 class BillControllerTest {
@@ -35,40 +44,24 @@ class BillControllerTest {
     JwtService jwtService;
 
     @MockBean
-    UserRepository userRepos;
-
-    @MockBean
     BillService billService;
 
-    private void createTestUser() {
-        User testUser = new User();
-        testUser.setFirstName("Test");
-        testUser.setLastName("User");
-        testUser.setUsername("TestUser");
-        testUser.setEmail("testuser@email.com");
-        testUser.setPassword("testpassword");
-        testUser.setAddress("testadres");
-        testUser.setHouseNumber(1);
-        testUser.setResidence("Teststad");
-        testUser.setInCaseOfEmergencyContact("Test contactpersoon");
-        testUser.setEmergencyContactPhoneNumber("Test nummer");
-        testUser.setPreferredHairdresser("Test kapster");
-        testUser.setNotes("Test knipbeurt geslaagd");
+    User testUser;
+    Role ROLE_OWNER;
 
-        Role role = new Role("ROLE_OWNER");
-        testUser.setRole(role);
+    @BeforeEach
+    public void setUp() {
+        Role testOwner = new Role("ROLE_OWNER");
 
-        userRepos.save(testUser);
+        User testUser = new User("Test", "User", "TestUser", "testuser@email.com", "testpassword", "testadres", 1, "testcity", "test contactperson", "test number", "test hairdresser", "test notes", testOwner);
     }
 
-    @Disabled
+//    @Disabled
     @Test
     @WithUserDetails("testUser")
-    @WithMockUser(username = "testUser", roles = "ROLE_OWNER")
+//    @WithMockUser(username = "testUser", roles = "ROLE_OWNER")
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
-
-        createTestUser();
 
         BillInputDto biDto = new BillInputDto();
         biDto.customerId = 56L;
