@@ -20,10 +20,11 @@ public class ProductController {
     }
 
     @PreAuthorize("hasRole('ROLE_OWNER')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public ResponseEntity<Object> createProduct(@Valid @RequestBody ProductDto pDto) {
+    public ProductDto createProduct(@Valid @RequestBody ProductDto pDto) {
         productService.createProduct(pDto);
-        return new ResponseEntity<>(pDto, HttpStatus.CREATED);
+        return pDto;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
