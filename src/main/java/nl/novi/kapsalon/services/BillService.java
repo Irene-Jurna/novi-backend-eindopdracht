@@ -64,14 +64,14 @@ public class BillService {
     }
 
     public BillInputDto getBill(Long id) {
-        Bill bill = billRepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bon niet gevonden"));
+        Bill bill = billRepos.findById(id).orElseThrow(() -> new ResourceNotFoundException("Men kan geen kaalkop bij het haar vatten: de id van deze bon staat niet in het systeem."));
         return transferBillToDto(bill);
     }
 
     public void updateBill(Long id, BillInputDto billForUpdate) {
         Optional<Bill> optionalBill = billRepos.findById(id);
         if (optionalBill.isEmpty()) {
-            throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
+            throw new ResourceNotFoundException("We zitten met de handen in het haar, maar we kunnen het id van deze rekening niet vinden. Probeer het nog eens met een ander id.");
         } else {
             Bill existingBill = optionalBill.get();
             Bill billToBeSaved = transferDtoToBill(billForUpdate);
@@ -83,7 +83,7 @@ public class BillService {
     public void deleteBill(Long id) {
         Optional<Bill> optionalBill = billRepos.findById(id);
         if (optionalBill.isEmpty()) {
-            throw new ResourceNotFoundException("De id van deze bon staat niet in het systeem");
+            throw new ResourceNotFoundException("We hebben de rekening opgemaakt, maar de id van deze bon staat niet in het systeem.");
         } else {
             billRepos.deleteById(id);
         }
@@ -105,7 +105,7 @@ public class BillService {
                 billRepos.save(bill);
             }
         } else {
-            throw new ResourceNotFoundException("Het rekening-id en/of het product-id staan niet in het systeem");
+            throw new ResourceNotFoundException("We willen je niet van hot naar haar sturen, maar het rekening-id en/of het product-id staan niet in het systeem. Check nog even goed of je de nummers goed hebt ingevuld.");
         }
     }
 
@@ -125,7 +125,7 @@ public class BillService {
                 billRepos.save(bill);
             }
         } else {
-            throw new ResourceNotFoundException("Het rekening-id en/of het behandelings-id staan niet in het systeem");
+            throw new ResourceNotFoundException("We hebben alles op haren en snaren gezet, maar kunntn het rekening-id en/of het behandelings-id niet vinden. Probeer het nog eens.");
         }
     }
 
@@ -191,5 +191,4 @@ public class BillService {
 
         return boDto;
     }
-
 }

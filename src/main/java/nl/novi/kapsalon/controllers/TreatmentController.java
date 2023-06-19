@@ -35,7 +35,7 @@ public class TreatmentController {
 
     @PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
     @GetMapping("/sum")
-    public ResponseEntity<Integer> calculateCombinedDuration(@RequestBody List<Long> treatmentIds) {
+    public ResponseEntity<Integer> calculateCombinedDuration(@Valid @RequestBody List<Long> treatmentIds) {
         int combinedDuration = treatmentService.calculateCombinedDuration(treatmentIds);
         return new ResponseEntity<>(combinedDuration, HttpStatus.OK);
     }

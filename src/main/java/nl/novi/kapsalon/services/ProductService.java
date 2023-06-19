@@ -39,7 +39,7 @@ public class ProductService {
     public void updateProduct(Long id, ProductDto productForUpdate) {
         Optional<Product> optionalProduct = productRepos.findById(id);
         if (optionalProduct.isEmpty()) {
-            throw new ResourceNotFoundException("Dit product-id staat niet in het systeem");
+            throw new ResourceNotFoundException("Het is kwaad kammen daar geen haar is: dit product-id staat niet in het systeem");
         } else {
             Product existingProduct = optionalProduct.get();
             Product productToBeSaved = transferDtoToProduct(productForUpdate);
@@ -51,7 +51,7 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Optional<Product> optionalProduct = productRepos.findById(id);
         if (optionalProduct.isEmpty()) {
-            throw new ResourceNotFoundException("Dit product-id staat niet in het systeem");
+            throw new ResourceNotFoundException("Daar zit een haar in de boter: dit product-id staat niet in het systeem");
         } else {
             productRepos.deleteById(id);
         }

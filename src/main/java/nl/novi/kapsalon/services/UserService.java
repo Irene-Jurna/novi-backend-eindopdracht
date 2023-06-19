@@ -1,13 +1,10 @@
 package nl.novi.kapsalon.services;
 
-import jakarta.annotation.security.RolesAllowed;
 import nl.novi.kapsalon.dtos.UserDto;
 import nl.novi.kapsalon.exceptions.DuplicateNameException;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.User;
-import nl.novi.kapsalon.repositories.RoleRepository;
 import nl.novi.kapsalon.repositories.UserRepository;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +15,10 @@ import java.util.Optional;
 @Service
 public class UserService {
     private final UserRepository userRepos;
-    private final RoleRepository roleRepos;
     private final PasswordEncoder encoder;
 
-    public UserService(UserRepository userRepos, RoleRepository roleRepos, PasswordEncoder encoder) {
+    public UserService(UserRepository userRepos, PasswordEncoder encoder) {
         this.userRepos = userRepos;
-        this.roleRepos = roleRepos;
         this.encoder = encoder;
     }
 
