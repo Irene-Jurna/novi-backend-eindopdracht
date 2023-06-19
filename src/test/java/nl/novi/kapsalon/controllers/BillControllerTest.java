@@ -1,23 +1,16 @@
 package nl.novi.kapsalon.controllers;
 
 import nl.novi.kapsalon.dtos.BillInputDto;
-import nl.novi.kapsalon.models.Role;
-import nl.novi.kapsalon.models.User;
 import nl.novi.kapsalon.services.BillService;
-import nl.novi.kapsalon.services.CustomUserDetailsService;
 import nl.novi.kapsalon.services.JwtService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,7 +24,7 @@ import java.util.Arrays;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BillController.class)
 @ActiveProfiles("test")
-//@AutoConfigureMockMvc(addFilters = false)
+@AutoConfigureMockMvc(addFilters = false)
 class BillControllerTest {
 
     @Autowired
@@ -44,7 +37,6 @@ class BillControllerTest {
     BillService billService;
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "ROLE_ADMIN")
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
 
@@ -62,7 +54,6 @@ class BillControllerTest {
                 .perform(MockMvcRequestBuilders.delete("/bill/123"))
                 .andExpect(MockMvcResultMatchers.status().isNoContent())
                 .andDo(MockMvcResultHandlers.print());
-
     }
 }
 
