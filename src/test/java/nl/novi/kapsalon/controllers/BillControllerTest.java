@@ -3,18 +3,15 @@ package nl.novi.kapsalon.controllers;
 import nl.novi.kapsalon.dtos.BillInputDto;
 import nl.novi.kapsalon.models.Role;
 import nl.novi.kapsalon.models.User;
-import nl.novi.kapsalon.repositories.UserRepository;
 import nl.novi.kapsalon.services.BillService;
+import nl.novi.kapsalon.services.CustomUserDetailsService;
 import nl.novi.kapsalon.services.JwtService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -27,14 +24,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-//@ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)
-//@MockitoSettings(strictness = Strictness.LENIENT)
 @WebMvcTest(BillController.class)
 @ActiveProfiles("test")
 //@AutoConfigureMockMvc(addFilters = false)
@@ -49,17 +43,8 @@ class BillControllerTest {
     @MockBean
     BillService billService;
 
-    User testUser;
-    Role testOwner = new Role("ROLE_OWNER");
-
-    @BeforeEach
-    public void setUp() {
-        this.testUser = new User("Test", "User", "TestUser", "testuser@email.com", "testpassword", "testadres", 1, "testcity", "test contactperson", "test number", "test hairdresser", "test notes", testOwner);
-    }
-
-    @Disabled
     @Test
-    @WithMockUser(username = "testUser", password = "testpassword", roles = "ROLE_OWNER")
+    @WithMockUser(username = "TestUser", roles = "ROLE_ADMIN")
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
 
