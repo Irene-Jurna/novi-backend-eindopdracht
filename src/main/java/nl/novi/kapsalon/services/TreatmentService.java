@@ -7,9 +7,7 @@ import nl.novi.kapsalon.repositories.TreatmentRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TreatmentService {
@@ -39,7 +37,7 @@ public class TreatmentService {
     public void updateTreatment(Long id, TreatmentDto treatmentForUpdate) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
-            throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
+            throw new ResourceNotFoundException("Als je haar maar goed zit! Helaas staat dit behandel-id niet in het systeem.");
         } else {
             Treatment existingTreatment = optionalTreatment.get();
             Treatment treatmentToBeSaved = transferDtoToTreatment(treatmentForUpdate);
@@ -51,7 +49,7 @@ public class TreatmentService {
     public void deleteTreatment(Long id) {
         Optional<Treatment> optionalTreatment = treatmentRepos.findById(id);
         if (optionalTreatment.isEmpty()) {
-            throw new ResourceNotFoundException("Dit behandel-id staat niet in het systeem");
+            throw new ResourceNotFoundException("Het is haarscherp: dit behandel-id staat niet in het systeem");
         } else {
             treatmentRepos.deleteById(id);
         }
@@ -59,10 +57,20 @@ public class TreatmentService {
 
     public Integer calculateCombinedDuration(List<Long> treatmentIds) {
         List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
+        Set<Long> foundIds = new HashSet<>();
+
         int combinedDuration = 0;
         for (Treatment treat : treatmentList) {
+            foundIds.add(treat.getId());
             combinedDuration = combinedDuration + treat.getDurationInMinutes();
         }
+
+        for (Long id : treatmentIds) {
+            if (!foundIds.contains(id)) {
+                throw new ResourceNotFoundException("Daar hangt de schaar uit: behandel-id " + id + " staat niet in het systeem. De behandeltijd van de resterende behandelingen is: " + combinedDuration + " minuten.");
+            }
+        }
+
         return combinedDuration;
     }
 

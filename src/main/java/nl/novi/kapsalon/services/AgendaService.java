@@ -39,7 +39,7 @@ public class AgendaService {
     public void updateAgenda(Long id, AgendaDto agendaForUpdate) {
         Optional<Agenda> optionalAgenda = agendaRepos.findById(id);
         if (optionalAgenda.isEmpty()) {
-            throw new ResourceNotFoundException("Dit agenda-id staat niet in het systeem");
+            throw new ResourceNotFoundException("Het scheelde maar een haartje, maar gelukkig hebben we de fout voor je gevonden: dit agenda-id staat niet in het systeem");
         } else {
             Agenda existingAgenda = optionalAgenda.get();
             Agenda agendaToBeSaved = transferDtoToAgenda(agendaForUpdate);
@@ -51,7 +51,7 @@ public class AgendaService {
     public void deleteAgenda(Long id) {
         Optional<Agenda> optionalAgenda = agendaRepos.findById(id);
         if (optionalAgenda.isEmpty()) {
-            throw new ResourceNotFoundException("Dit agenda-id staat niet in het systeem");
+            throw new ResourceNotFoundException("'Geen haar op m'n hoofd die eraan denkt!' (Dit agenda-id staat niet in het systeem)");
         } else {
             agendaRepos.deleteById(id);
         }

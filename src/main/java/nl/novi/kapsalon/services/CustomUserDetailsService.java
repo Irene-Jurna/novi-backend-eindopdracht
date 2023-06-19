@@ -19,7 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // Hier zorgen dat er een userDetails object uitkomt. Dat doe je door in de repos te zoeken op username
         Optional<User> ou = userRepos.findUserByUsername(username);
         if (ou.isPresent()) {
             User user = ou.get();

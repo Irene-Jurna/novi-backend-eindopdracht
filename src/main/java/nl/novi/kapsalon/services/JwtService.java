@@ -22,6 +22,7 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -51,8 +52,7 @@ public class JwtService {
 
     private String createToken(Map<String, Object> claims, String
             subject) {
-        long validPeriod = 1000 * 60 * 60 * 24 * 10; // 10 days in ms
-//            long validPeriod = 1000 * 60; // 1 minute
+        long validPeriod = 1000 * 60 * 60 * 24 * 10; // 10 days
 
         long currentTime = System.currentTimeMillis();
         return Jwts.builder()
@@ -60,12 +60,10 @@ public class JwtService {
                 .setSubject(subject)
                 .setIssuedAt(new Date(currentTime))
                 .setExpiration(new Date(currentTime + validPeriod))
-                // Encrypten
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // Validate haalt de username uit de token > checkt of die gelijk is aan de username van het userdetails object > check of de token niet expired is
     public Boolean validateToken(String token, UserDetails
             userDetails) {
         final String username = extractUsername(token);
