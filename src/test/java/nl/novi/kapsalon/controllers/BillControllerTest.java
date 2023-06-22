@@ -18,7 +18,7 @@ class BillControllerTest extends AbstractTest {
     private BillService billService;
 
     @Test
-    @WithMockUser(username = "admin", roles = {"HAIRDRESSER", "OWNER"})
+    @WithMockUser(username = "testUser", roles = {"HAIRDRESSER", "OWNER"})
     @DisplayName("Should delete correct bill")
     void deleteBill() throws Exception {
         this.mockMvc
@@ -36,44 +36,4 @@ class BillControllerTest extends AbstractTest {
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
                 .andDo(MockMvcResultHandlers.print());
     }
-
-
 }
-
-//@ExtendWith(SpringExtension.class)
-//@WebMvcTest(BillController.class)
-//@ActiveProfiles("test")
-//@AutoConfigureMockMvc(addFilters = false)
-//class BillControllerTest {
-//
-//    @Autowired
-//    MockMvc mockMvc;
-//
-//    @MockBean
-//    JwtService jwtService;
-//
-//    @MockBean
-//    BillService billService;
-//
-//    @Test
-//    @DisplayName("Should delete correct bill")
-//    void deleteBill() throws Exception {
-//
-//        BillInputDto biDto = new BillInputDto();
-//        biDto.customerId = 56L;
-//        biDto.hairdresserId = 50L;
-//        biDto.treatmentIds = new ArrayList<>(Arrays.asList(30L, 31L));
-//        biDto.productIds = new ArrayList<>(Arrays.asList(10L, 11L));
-//        biDto.paid = true;
-//        biDto.setId(123L);
-//
-//        Mockito.doNothing().when(billService).deleteBill(123L);
-//
-//        this.mockMvc
-//                .perform(MockMvcRequestBuilders.delete("/bill/123"))
-//                .andExpect(MockMvcResultMatchers.status().isNoContent())
-//                .andDo(MockMvcResultHandlers.print());
-//    }
-//}
-
-
