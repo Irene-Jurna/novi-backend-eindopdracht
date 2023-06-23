@@ -54,9 +54,21 @@ class ProductServiceTest {
     @Test
     @DisplayName("Should create correct product")
     void createProduct() {
+        when(productRepos.save(product1)).thenReturn(product1);
+
+        productService.createProduct(productService.transferProductToDto(product1));
+        verify(productRepos, times(1)).save(productArgumentCaptor.capture());
+        Product product = productArgumentCaptor.getValue();
+
+        assertEquals(product1.getId(), product.getId());
+        assertEquals(product1.getName(), product.getName());
+        assertEquals(product1.getPurchasePrice(), product.getPurchasePrice());
+        assertEquals(product1.getPrice(), product.getPrice());
+        assertEquals(product1.getInStock(), product.getInStock());
     }
 
     @Test
+    @DisplayName("Should return all products in the database")
     void getAllProducts() {
         when(productRepos.findAll()).thenReturn(List.of(product1, product2));
 
@@ -85,11 +97,8 @@ class ProductServiceTest {
 
         ProductDto newProductDto = new ProductDto("Shampoobar", 16.99, 20.00, 8, null);
         newProductDto.setId(product1.getId());
-
         when(productRepos.save(productService.transferDtoToProduct(newProductDto))).thenReturn(product1);
-
         productService.updateProduct(1L, newProductDto);
-
         verify(productRepos, times(1)).save(productArgumentCaptor.capture());
         Product captured = productArgumentCaptor.getValue();
 
@@ -106,7 +115,6 @@ class ProductServiceTest {
     void doNotUpdateProduct() throws Exception {
         ProductDto newProductDto = new ProductDto("Shampoobar", 16.99, 20.00, 8, null);
         newProductDto.setId(product1.getId());
-
         assertThrows(ResourceNotFoundException.class, () -> productService.updateProduct(null, newProductDto));
     }
 
@@ -126,13 +134,5 @@ class ProductServiceTest {
             productService.deleteProduct(3L);
         });
         assertEquals("Daar zit een haar in de boter: dit product-id staat niet in het systeem", exception.getMessage());
-    }
-
-    @Test
-    void transferDtoToProduct() {
-    }
-
-    @Test
-    void transferProductToDto() {
     }
 }
