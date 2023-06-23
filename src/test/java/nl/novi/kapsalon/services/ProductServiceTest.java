@@ -42,7 +42,7 @@ class ProductServiceTest {
         productService = new ProductService(productRepos, modelMapper);
 
         Long productId1 = 1L;
-        Long productId2 = 1L;
+        Long productId2 = 2L;
 
         product1 = new Product("Shampoobar", 12.99, 16.00, 10, null);
         product1.setId(productId1);
