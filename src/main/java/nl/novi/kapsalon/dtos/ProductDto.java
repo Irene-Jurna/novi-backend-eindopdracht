@@ -19,6 +19,12 @@ public class ProductDto {
     @Positive
     public Integer inStock;
 
+    public ProductDto() {
+    }
+
+    public ProductDto(String name, double purchasePrice, double price, int inStock, Object bills) {
+    }
+
     public Long getId() {
         return id;
     }

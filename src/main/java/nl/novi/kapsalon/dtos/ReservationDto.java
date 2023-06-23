@@ -1,7 +1,6 @@
 package nl.novi.kapsalon.dtos;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class ReservationDto {
     private Long agendaId;

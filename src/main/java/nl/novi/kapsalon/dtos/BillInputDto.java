@@ -16,6 +16,8 @@ public class BillInputDto {
 
     public List<Long> treatmentIds = new ArrayList<>();
     public List<Long> productIds = new ArrayList<>();
+
+    @NotNull
     public Boolean paid;
 
     public Long getId() {
