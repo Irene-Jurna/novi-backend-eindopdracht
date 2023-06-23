@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 
 public class TreatmentDto {
     public Long id;
@@ -16,6 +17,12 @@ public class TreatmentDto {
 
     @Digits(integer=3, fraction = 2)
     public Double price;
+
+    public TreatmentDto() {
+    }
+
+    public TreatmentDto(String name, int durationInMinutes, double price) {
+    }
 
     public Long getId() {
         return id;
