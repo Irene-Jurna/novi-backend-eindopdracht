@@ -16,14 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "reservations")
 public class Reservation extends BaseModel {
-    @ManyToOne
-    @JoinColumn(name = "agenda_id")
-    private Agenda agenda;
 
-    @ManyToOne
-    @JoinColumn(name = "hairdresser_id")
-    private User hairdresser;
-
-    private LocalDateTime reservationDateTime;
+    private String day;
     private Integer timeSlot;
 }
