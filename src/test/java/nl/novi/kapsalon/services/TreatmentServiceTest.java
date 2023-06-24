@@ -4,6 +4,7 @@ import nl.novi.kapsalon.dtos.TreatmentDto;
 import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -107,10 +107,23 @@ class TreatmentServiceTest {
     }
 
     @Test
+    @DisplayName("Should delete correct treatment from database based on id")
     void deleteTreatment() {
+        when(treatmentRepos.findById(treat2.getId())).thenReturn(Optional.of(treat2));
+        treatmentService.deleteTreatment(2L);
+        verify(treatmentRepos).deleteById(2L);
     }
 
     @Test
+    @Disabled
+    @DisplayName("Should calculate combined duration of treatments")
     void calculateCombinedDuration() {
+        List<Long> treatmentIds = Arrays.asList(1L, 2L);
+        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
+
+        when(treatmentRepos.findAllByIdIsIn(treatmentIds)).thenReturn(treatmentList);
+
+        Integer combinedDuration = treatmentService.calculateCombinedDuration(treatmentIds);
+        assertEquals(combinedDuration, 55);
     }
 }
