@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
@@ -31,6 +33,9 @@ public class User extends BaseModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleName")
     private Role role;
+
+    @OneToMany(mappedBy = "hairdresser")
+    private List<Agenda> agendas;
 
     public Role getRole() {
         return role;
