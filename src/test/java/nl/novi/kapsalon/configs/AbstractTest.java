@@ -21,4 +21,5 @@ public abstract class AbstractTest {
 
     @MockBean
     private UserRepository userRepository;
+
 }
