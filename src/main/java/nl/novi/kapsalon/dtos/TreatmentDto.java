@@ -24,6 +24,9 @@ public class TreatmentDto {
     public TreatmentDto(String name, int durationInMinutes, double price) {
     }
 
+    public TreatmentDto(Long id, String name, int durationInMinutes, double price) {
+    }
+
     public Long getId() {
         return id;
     }
