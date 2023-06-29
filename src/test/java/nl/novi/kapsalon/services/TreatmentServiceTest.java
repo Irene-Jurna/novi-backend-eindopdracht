@@ -1,10 +1,10 @@
 package nl.novi.kapsalon.services;
 
 import nl.novi.kapsalon.dtos.TreatmentDto;
+import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.Treatment;
 import nl.novi.kapsalon.repositories.TreatmentRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +37,7 @@ class TreatmentServiceTest {
 
     Treatment treat1;
     Treatment treat2;
+    Treatment treat3;
 
     @BeforeEach
     void setUp() {
@@ -48,9 +49,15 @@ class TreatmentServiceTest {
 
         treat1 = new Treatment("Knippen wassen", 25, 25.00);
         treat1.setId(treatmentId1);
+        treat1.setName("Knippen wassen");
+        treat1.setDurationInMinutes(25);
+        treat1.setPrice(25.00);
 
         treat2 = new Treatment("Haar vlechten", 30, 30.00);
         treat2.setId(treatmentId2);
+        treat2.setName("Haar vlechten");
+        treat2.setDurationInMinutes(30);
+        treat2.setPrice(30.00);
     }
 
     @Test
@@ -107,6 +114,14 @@ class TreatmentServiceTest {
     }
 
     @Test
+    @DisplayName("Should return exception for update treatment method because id does not exists")
+    void updateTreatmentException() {
+        TreatmentDto newTreatmentDto = new TreatmentDto("Blonderen", 60, 60.00);
+        newTreatmentDto.setId(treat1.getId());
+        assertThrows(ResourceNotFoundException.class, () -> treatmentService.updateTreatment(null, newTreatmentDto));
+    }
+
+    @Test
     @DisplayName("Should delete correct treatment from database based on id")
     void deleteTreatment() {
         when(treatmentRepos.findById(treat2.getId())).thenReturn(Optional.of(treat2));
@@ -115,15 +130,40 @@ class TreatmentServiceTest {
     }
 
     @Test
-    @Disabled
+    @DisplayName("Should not delete treatment because the id does not exists")
+    void deleteProductException() {
+        when(treatmentRepos.findById(treat1.getId())).thenReturn(Optional.empty());
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+            treatmentService.deleteTreatment(3L);
+        });
+        assertEquals("Het is haarscherp: dit behandel-id staat niet in het systeem", exception.getMessage());
+    }
+
+    @Test
     @DisplayName("Should calculate combined duration of treatments")
     void calculateCombinedDuration() {
+
         List<Long> treatmentIds = Arrays.asList(1L, 2L);
-        List<Treatment> treatmentList = treatmentRepos.findAllByIdIsIn(treatmentIds);
+        List<Treatment> treatmentList = List.of(treat1, treat2);
 
         when(treatmentRepos.findAllByIdIsIn(treatmentIds)).thenReturn(treatmentList);
 
         Integer combinedDuration = treatmentService.calculateCombinedDuration(treatmentIds);
         assertEquals(combinedDuration, 55);
+    }
+
+    @Test
+    @DisplayName("Method to calculate combined duration should return exception message")
+    void calculateCombinedDurationException() {
+        List<Long> treatmentIds = Arrays.asList(1L, 2L, 3L);
+        List<Treatment> treatmentList = new ArrayList<>(List.of(treat1, treat2));
+
+        when(treatmentRepos.findAllByIdIsIn(treatmentIds)).thenReturn(treatmentList);
+
+        ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class, () -> {
+        treatmentService.calculateCombinedDuration(treatmentIds);
+    });
+
+        assertEquals("Daar hangt de schaar uit: behandel-id " + 3 + " staat niet in het systeem. De behandeltijd van de resterende behandelingen is: " + 55 + " minuten." , exception.getMessage());
     }
 }
