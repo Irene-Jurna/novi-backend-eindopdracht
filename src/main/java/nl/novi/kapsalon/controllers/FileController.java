@@ -1,11 +1,13 @@
 package nl.novi.kapsalon.controllers;
 
 import nl.novi.kapsalon.dtos.FileInputDto;
+import nl.novi.kapsalon.dtos.FileOutputDto;
 import nl.novi.kapsalon.models.File;
 import nl.novi.kapsalon.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -15,6 +17,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("file")
 @CrossOrigin
+@PreAuthorize("hasAnyRole('ROLE_HAIRDRESSER', 'ROLE_OWNER')")
 public class FileController {
 
     @Autowired
@@ -28,7 +31,8 @@ public class FileController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getFileInfo(@PathVariable long id) {
-        return ResponseEntity.noContent().build();
+        FileOutputDto responseDto = fileService.getFileById(id);
+        return ResponseEntity.ok().body(responseDto);
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {MediaType.APPLICATION_JSON_VALUE})
