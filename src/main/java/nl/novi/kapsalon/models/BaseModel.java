@@ -19,7 +19,6 @@ public abstract class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Of Timestamp gebruiken? private Timestamp created (zonder @CreatedDate, met @JsonIgnore)
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Instant created;

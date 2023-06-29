@@ -16,8 +16,6 @@ import java.util.List;
 @Table(name = "agendas")
 public class Agenda extends BaseModel {
 
-//    private LocalDate date;
-
     @ElementCollection
     private List<String> workingDays;
 
