@@ -37,6 +37,9 @@ public class User extends BaseModel {
     @OneToMany(mappedBy = "hairdresser")
     private List<Agenda> agendas;
 
+    public User(String name, String lastName, String username, String email, String password, String address, int houseNumber, String residence, String inCaseOfEmergencyContact, String emergencyContactPhoneNumber, String preferredHairdresser, String notes, Object role) {
+    }
+
     public Role getRole() {
         return role;
     }
