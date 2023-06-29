@@ -1,6 +1,5 @@
 package nl.novi.kapsalon.controllers;
 
-import nl.novi.kapsalon.dtos.FileInputDto;
 import nl.novi.kapsalon.dtos.FileOutputDto;
 import nl.novi.kapsalon.exceptions.ResourceNotFoundException;
 import nl.novi.kapsalon.models.File;
@@ -67,7 +66,7 @@ public class FileController {
         return ResponseEntity.created(location).body(location);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteFile() {
         return ResponseEntity.noContent().build();
     }
