@@ -26,6 +26,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public Optional<File> getOptionalFileById(long id) {
+        return fileRepos.findById(id);
+    }
+
+    @Override
     public FileOutputDto getFileById(long id) {
         Optional<File> stored = fileRepos.findById(id);
 

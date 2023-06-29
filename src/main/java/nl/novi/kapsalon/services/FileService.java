@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface FileService {
     Iterable<File> getFiles();
+    Optional<File> getOptionalFileById(long id);
     FileOutputDto getFileById(long id);
     boolean fileExistsById(long id);
     long uploadFile(MultipartFile file);
